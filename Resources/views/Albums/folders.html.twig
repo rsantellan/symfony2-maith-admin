@@ -1,0 +1,31 @@
+{% extends 'MaithCommonAdminBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonimage/css/maithalbums.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/colorbox.css') }}" />
+{% endblock %}
+  
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery.colorbox-min.js') }}"></script>    
+  <script type="text/javascript" src="{{ asset('bundles/maithcommonimage/js/imagesGalleryManager.js') }}"></script>
+{% endblock %}
+  
+{% block body %}
+  {% for gallery, files in galleries %}
+  <div class="gallery_container">
+    <div class="gallery_title">
+      <h4>{{ gallery }}</h4>
+      <a class="album_uploader_link" href="{{ path('maith_admin_media_gallery_upload', {'gallery': gallery})}}">{% trans %}maith_images_admin_upload{% endtrans %}</a>
+    </div>
+
+    <div class="gallery_files" id="gallery_files_{{gallery}}">
+      <ul class="img_thumb_ul">
+        {{ include('MaithCommonAdminBundle:Albums:foldersFiles.html.twig', {'files': files, 'gallery': gallery}) }}
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+  {% endfor %}
+{% endblock %}

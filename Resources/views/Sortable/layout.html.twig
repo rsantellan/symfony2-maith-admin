@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Sortable{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('bundles/maithcommonadmin/images/favicon.ico') }}" />
+    
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery-1.7.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery-ui-1.8.16.custom.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/adminManager.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/eggplant/jquery-ui-1.8.18.custom.css') }}" />
+    <style>
+          #sortable { 
+            list-style-type: none; 
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0; 
+            width: 80%; 
+          }
+          #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 0.8em; height: 18px; }
+          #sortable li span { position: absolute; margin-left: -1.3em; }
+          h1{
+            margin-left: auto;
+            margin-right: auto;
+            width: 35%;
+          }
+    </style>
+    <script type="text/javascript">
+
+    $(document).ready(function() { 
+      adminManager.getInstance().startSortable('sortable', '{{ url_sortable }}');
+    });
+
+    </script>
+    {% block stylesheets %}{% endblock %}
+    {% block javascripts %}{% endblock %}
+  </head>
+  <body>
+   <h1>{% trans %}admin_sortable_title{% endtrans %}</h1>
+   <ul id="sortable">
+     {% for object in sortableList %}
+      
+        <li id="listItem_{{ object.id }}" class="ui-state-default">
+          <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ object }}
+        </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

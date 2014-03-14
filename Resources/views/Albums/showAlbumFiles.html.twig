@@ -1,0 +1,18 @@
+{% for file in files%}
+    <li id="file_container_{{file.id}}" class="img_thumb_li">
+      <div class="img_thumb_container">
+        <div class="img_edit">
+          <a class="edit_file_link" href="{{ path('maith_admin_media_show_file', { 'id' : file.id }) }}">
+            {% trans %}maith_images_admin_edit{% endtrans %}
+          </a>
+        </div>
+        <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(150, 150, 'rcce') }}" />
+        <div class="img_delete">
+          <a onclick="imagesManager.getInstance().removeImage('{{ path('maith_admin_media_remove', {'id': file.id})}}', '{% trans %}maith_images_admin_delete_confirmation{% endtrans %}', {{ file.id }});" href="javascript:void(0)" class="">
+            <img src="{{ asset('bundles/maithcommonimage/images/delete.png') }}" />
+          </a>
+        </div>
+      </div>
+    </li>
+    
+{% endfor %}

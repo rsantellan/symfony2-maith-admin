@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Administrador{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('bundles/maithcommonadmin/images/favicon.ico') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/960.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/template.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/colour.css') }}" />
+    {% block stylesheets %}{% endblock %}
+    
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery-1.10.1.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery-migrate-1.2.1.min.js') }}"></script>
+    
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/adminManager.js') }}"></script>
+    {% block javascripts %}{% endblock %}
+  </head>
+  <body>
+    <div class="header_div">
+      <label>{% trans %}admin_main_label{% endtrans %}</label>
+      {% block adminlogo %}
+        <img src="{{ asset('bundles/maithcommonadmin/images/maith_logo.png') }}" height="70"/>
+      {% endblock %}
+      
+      <ul id="navigation">
+        {% block adminmenu %}
+          <li><span class="active">{% trans %}admin_menu_dashboard{% endtrans %}</span></li>
+          <li><a href="">Test</a></li>
+        {% endblock %}
+        <li style="float: right;"><a href="{{ path('fos_user_security_logout')}}">{% trans %}admin_menu_logout{% endtrans %}</a></li>
+      </ul>
+    </div>
+    <div id="content" class="container_16 clearfix">
+      {% block body %}{% endblock %}   
+    </div>
+    <div id="foot">
+      <a href="{{ path('maith_common_translator_homepage')}}">{% trans %}admin_link_traducir{% endtrans %}</a>
+      <a href="#">Contact Me</a>
+      <div class="espacio"></div>
+    </div>
+    <input type="hidden" value="{{ path('maith_admin_jquery_datatable_langs')}}" id="jquery-datatable-langs" />
+  </body>
+</html>

@@ -1,0 +1,16 @@
+#table_data th{
+  color: black !important;
+}
+
+.dataTables_length select{
+  width: 250px;
+}
+
+.dataTables_filter input{
+  width: 250px;
+}
+/**
+table.dataTable tr.odd td.sorting_1 {
+    background-color: #F2F238 !important;
+}
+**/

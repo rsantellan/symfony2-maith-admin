@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Upload{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('bundles/maithcommonadmin/images/favicon.ico') }}" />
+    
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery-1.7.1.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/jqueryfileupload/jquery.fileupload-ui-noscript.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/jqueryfileupload/jquery.fileupload-ui.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/jqueryfileupload/style.css') }}" />
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jqueryfileupload/vendor/jquery.ui.widget.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jqueryfileupload/jquery.iframe-transport.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jqueryfileupload/jquery.fileupload.js') }}"></script>
+<script>
+$(function () {
+    var url = 'myurl';
+    $('#fileupload').fileupload({
+        url: url,
+        dataType: 'json',
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('<p/>').text(file.name).appendTo('#files');
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    });
+});
+</script>
+  </head>
+  <body>
+   <h1>{% trans %}admin_upload_view{% endtrans %}</h1>
+    <form id="file_upload" action="upload.php" method="POST" enctype="multipart/form-data">
+      <input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple>
+    <button>Upload</button>
+    <div>Upload files</div>
+    
+    </form>
+    
+
+        <!-- The global progress bar -->
+    <div id="progress" class="progress progress-success progress-striped">
+        <div class="bar"></div>
+    </div>
+        
+  </body>
+</html>

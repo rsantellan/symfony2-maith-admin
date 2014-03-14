@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}maith_images_admin_file_sortable_page_title{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('bundles/maithcommonadmin/images/favicon.ico') }}" />
+    
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery-1.7.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery-ui-1.8.16.custom.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/filesSortable.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/eggplant/jquery-ui-1.8.18.custom.css') }}" />
+    <style>
+          #sortable { list-style-type: none; margin: 0; padding: 0; }
+          #sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 100px; font-size: 4em; text-align: center; }
+          h1{
+            margin-left: auto;
+            margin-right: auto;
+            width: 52%;
+          }
+          img.my_image{
+            display: none;
+          }
+    </style>
+    {% block stylesheets %}{% endblock %}
+    {% block javascripts %}{% endblock %}
+  </head>
+  <body>
+   <h1>{% trans %}maith_images_admin_sortable_title{% endtrans %}<img class="my_image" src="{{ asset('bundles/maithcommonadmin/images/loading.gif') }}" /></h1>
+   <ul id="sortable">
+     {% for file in album.files %}
+      
+        <li id="listItem_{{ file.id }}">
+          <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(100, 100, 't') }}" />
+        </li>
+      {% endfor %}
+    </ul>
+    <input type="hidden" id="sort_ajax" value="{{ path('maith_admin_media_sort_action')}}" />
+    <input type="hidden" id="album_id" value="{{ album.id }}" />
+  </body>
+</html>

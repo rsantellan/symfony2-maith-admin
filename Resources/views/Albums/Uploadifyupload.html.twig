@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Upload{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('bundles/maithcommonadmin/images/favicon.ico') }}" />
+    
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery-1.7.1.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/uploadify.css') }}" />
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery.uploadify.min.js') }}"></script>
+    {#{ form_stylesheet(uploadForm) }#}
+    {#{ form_javascript(uploadForm) }#}
+       <script type="text/javascript">
+    jQuery(document).ready(function($) {
+        var $field = $('#form_download_upload_');
+                var $form = $field.closest('form');
+        var $queue = $('#form_download_queue_');
+        var $nbQueue = 0;
+        //console.info(Array);
+        
+        //console.info({"data-session":"xGPh TlOJzE=","_uploadify":true});
+        var $configs = $.extend({
+          "script":"maith_admin_media_actual_upload",
+          "swf":"\/bundles\/maithcommonadmin\/js\/uploadify.swf",
+          "cancelImg":"\/bundles\/genemuform\/images\/cancel.png",
+          "folder":"upload",
+          "scriptData":{
+            "data-session":"xGPh TlOJzE=",
+            "_uploadify":true
+          },
+          "debug":true,
+          "multi":false,
+          "uploader":"\/app_dev.php\/admin\/media\/do-upload",
+          "queueID":"form_download_queue"
+        }, {
+            onUploadSuccess: function(file, data, response) {
+                data = jQuery.parseJSON(data);
+
+                if (data.result == '1') {
+                                            var value = data.file;
+                    
+                    $('#form_download').val(value);
+                    $nbQueue--;
+                } else {
+                    alert('Error');
+                }
+            },
+            onSelect: function(file) {
+                $nbQueue++;
+            },
+            onUploadError: function(file, errorCode, errorMsg, errorString) {
+                alert('error');
+            }
+        });
+
+            $configs.onAllComplete = function(event, data) {
+            $form.submit();
+        };
+
+        $form.submit(function(event) {
+            if (0 === $nbQueue) {
+                return $joinFiles();
+            } else {
+                $field.uploadifyUpload();
+                event.preventDefault();
+            }
+        });
+    
+        var $joinFiles = function() {
+            if ($files = $field.data('files')) {
+                $field.val($files.join(','));
+            }
+
+            return true;
+        }
+        //console.info($configs);
+        $field.uploadify($configs);
+            });
+            
+       $( document ).ready(function() {
+          $("#file_upload").uploadify({
+              height        : 30,
+              swf           : '/bundles/maithcommonadmin/js/uploadify.swf',
+              uploader      : '/app_dev.php/admin/media/do-upload',
+              folder        : "upload",
+              width         : 120,
+              scriptData    : {"data-session":"xGPh TlOJzE=","_uploadify":true},
+              debug         : true,
+              multi         : false,
+          });
+        });
+</script>
+  </head>
+  <body>
+   <h1>{% trans %}admin_upload_view{% endtrans %}</h1>
+    
+    <form>
+		<div id="queue"></div>
+		<input id="file_upload" name="file_upload" type="file" multiple="true">
+	</form>
+
+  </body>
+</html>

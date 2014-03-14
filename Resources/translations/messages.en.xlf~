@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="3058f705416b84dab01d8f41d44b557c" resname="admin_sortable_title">
+        <source>admin_sortable_title</source>
+        <target>__admin_sortable_title</target>
+      </trans-unit>
+      <trans-unit id="f241c4253f7cedb5a5934171e97ed054" resname="admin_main_label">
+        <source>admin_main_label</source>
+        <target>__admin_main_label</target>
+      </trans-unit>
+      <trans-unit id="22767c96cf9b0eb838f2fee40c41d4e9" resname="admin_menu_logout">
+        <source>admin_menu_logout</source>
+        <target>__admin_menu_logout</target>
+      </trans-unit>
+      <trans-unit id="972e2c7554606061eddcf7b5e2e41ba9" resname="admin_menu_dashboard">
+        <source>admin_menu_dashboard</source>
+        <target>__admin_menu_dashboard</target>
+      </trans-unit>
+      <trans-unit id="6537bd80ee917d834496e601d44ee79e" resname="maith_images_admin_sortable_title">
+        <source>maith_images_admin_sortable_title</source>
+        <target>__maith_images_admin_sortable_title</target>
+      </trans-unit>
+      <trans-unit id="09e690041635cd26a7ef7d7c20c88d9b" resname="admin_upload_view">
+        <source>admin_upload_view</source>
+        <target>__admin_upload_view</target>
+      </trans-unit>
+      <trans-unit id="103227099ee182b418da2e62f1eae290" resname="maith_images_admin_edit">
+        <source>maith_images_admin_edit</source>
+        <target>__maith_images_admin_edit</target>
+      </trans-unit>
+      <trans-unit id="640ef587bd15c34f339bd61623f29fba" resname="maith_images_admin_delete_confirmation">
+        <source>maith_images_admin_delete_confirmation</source>
+        <target>__maith_images_admin_delete_confirmation</target>
+      </trans-unit>
+      <trans-unit id="91ec4430acb320c79d712d35a18a8032" resname="maith_images_admin_upload">
+        <source>maith_images_admin_upload</source>
+        <target>__maith_images_admin_upload</target>
+      </trans-unit>
+      <trans-unit id="86c0ba0999866abe2ffeba74cf50f27b" resname="maith_images_admin_sort">
+        <source>maith_images_admin_sort</source>
+        <target>__maith_images_admin_sort</target>
+      </trans-unit>
+      <trans-unit id="c5f14d7a0db524a4282718f8d28a67cf" resname="admin_link_traducir">
+        <source>admin_link_traducir</source>
+        <target>__admin_link_traducir</target>
+      </trans-unit>
+      <trans-unit id="635ad6b83ea9c3ec507f54ba36c3e465" resname="maith_images_admin_descargar">
+        <source>maith_images_admin_descargar</source>
+        <target>__maith_images_admin_descargar</target>
+      </trans-unit>
+      <trans-unit id="72edc4c5fe7f8e2dd8bc28af136a7f48" resname="maith_images_admin_file_title">
+        <source>maith_images_admin_file_title</source>
+        <target>__maith_images_admin_file_title</target>
+      </trans-unit>
+      <trans-unit id="8bebb47bb324550f9c43d20b3bbb70b0" resname="maith_images_admin_download_original">
+        <source>maith_images_admin_download_original</source>
+        <target>__maith_images_admin_download_original</target>
+      </trans-unit>
+      <trans-unit id="bf38645d1670046c43b8d40feaa308cc" resname="maith_images_admin_save_image">
+        <source>maith_images_admin_save_image</source>
+        <target>__maith_images_admin_save_image</target>
+      </trans-unit>
+      <trans-unit id="5b541b55360fc981535ae490fda829f1" resname="maith_images_admin_cancel_form">
+        <source>maith_images_admin_cancel_form</source>
+        <target>__maith_images_admin_cancel_form</target>
+      </trans-unit>
+      <trans-unit id="6a6442b5797804a3c26503d9a2f74569" resname="maith_images_admin_show_name">
+        <source>maith_images_admin_show_name</source>
+        <target>__maith_images_admin_show_name</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

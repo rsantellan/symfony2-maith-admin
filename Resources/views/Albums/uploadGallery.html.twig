@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}admin_image_upload{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('bundles/maithcommonadmin/images/favicon.ico') }}" />
+    
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery-1.7.1.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/js/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css') }}" />
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/plupload/plupload.full.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js') }}"></script>
+    {% if app.request.locale != 'en' %}
+      <script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/plupload/i18n/' ~ app.request.locale ~ '.js') }}"></script>
+    {% endif %}
+    {#{ form_stylesheet(uploadForm) }#}
+    {#{ form_javascript(uploadForm) }#}
+       <script type="text/javascript">
+         $(function() {
+           
+    function log() {
+        return false;
+		var str = "";
+        
+		plupload.each(arguments, function(arg) {
+			var row = "";
+
+			if (typeof(arg) != "string") {
+				plupload.each(arg, function(value, key) {
+					// Convert items in File objects to human readable form
+					if (arg instanceof plupload.File) {
+						// Convert status to human readable
+						switch (value) {
+							case plupload.QUEUED:
+								value = 'QUEUED';
+								break;
+
+							case plupload.UPLOADING:
+								value = 'UPLOADING';
+								break;
+
+							case plupload.FAILED:
+								value = 'FAILED';
+								break;
+
+							case plupload.DONE:
+								value = 'DONE';
+								break;
+						}
+					}
+
+					if (typeof(value) != "function") {
+						row += (row ? ', ' : '') + key + '=' + value;
+					}
+				});
+
+				str += row + " ";
+			} else { 
+				str += arg + " ";
+			}
+		});
+
+		$('#log').append(str + "\n");
+	}
+    
+	$("#uploader").pluploadQueue({
+		// General settings
+		runtimes : 'html5, flash, html4',
+		url : '{{ path('maith_admin_media_gallery_actual_upload')}}',
+		max_file_size : '20mb',
+		multipart_params: {'data-session': '{{ dataSession }}', '_myUploader': true, 'gallery' : '{{ gallery }}'},
+		// Flash settings
+		flash_swf_url : '{{ asset('bundles/maithcommonadmin/js/plupload/plupload.flash.swf') }}',
+        // PreInit events, bound before any internal events
+		preinit : {
+			Init: function(up, info) {
+				log('[Init]', 'Info:', info, 'Features:', up.features);
+			},
+
+			UploadFile: function(up, file) {
+				log('[UploadFile]', file);
+
+				// You can override settings before the file is uploaded
+				// up.settings.url = 'upload.php?id=' + file.id;
+				// up.settings.multipart_params = {param1 : 'value1', param2 : 'value2'};
+			}
+		},
+
+		// Post init events, bound after the internal events
+		init : {
+			Refresh: function(up) {
+				// Called when upload shim is moved
+				log('[Refresh]');
+			},
+
+			StateChanged: function(up) {
+				// Called when the state of the queue is changed
+				log('[StateChanged]', up.state == plupload.STARTED ? "STARTED" : "STOPPED");
+                $(".plupload_start").removeClass("plupload_disabled");
+			},
+
+			QueueChanged: function(up) {
+				// Called when the files in queue are changed by adding/removing files
+				log('[QueueChanged]');
+			},
+
+			UploadProgress: function(up, file) {
+				// Called while a file is being uploaded
+				log('[UploadProgress]', 'File:', file, "Total:", up.total);
+                if (up.total.uploaded == up.files.length) {
+                    $(".plupload_buttons").css("display", "inline");
+                    $(".plupload_upload_status").css("display", "inline");
+                    $(".plupload_start").addClass("plupload_disabled");
+                }
+			},
+
+			FilesAdded: function(up, files) {
+				// Callced when files are added to queue
+				log('[FilesAdded]');
+
+				plupload.each(files, function(file) {
+					log('  File:', file);
+				});
+			},
+
+			FilesRemoved: function(up, files) {
+				// Called when files where removed from queue
+				log('[FilesRemoved]');
+
+				plupload.each(files, function(file) {
+					log('  File:', file);
+				});
+			},
+
+			FileUploaded: function(up, file, info) {
+				// Called when a file has finished uploading
+				log('[FileUploaded] File:', file, "Info:", info);
+                if(parent.imagesManager != undefined && parent.imagesManager.getInstance() != undefined)
+                {
+                  parent.imagesManager.getInstance().refreshAlbums({{ gallery }});
+                }
+                /*
+                console.info(up);
+                if(up.total.queued == 0) {
+                    console.info('estoy aca');
+                    up.splice();
+                    up.refresh();
+                }
+                */
+			},
+
+			ChunkUploaded: function(up, file, info) {
+				// Called when a file chunk has finished uploading
+				log('[ChunkUploaded] File:', file, "Info:", info);
+			},
+
+			Error: function(up, args) {
+				// Called when a error has occured
+				log('[error] ', args);
+			}
+		}
+	}); 
+
+	// Client side form validation
+	$('form').submit(function(e) {
+        var uploader = $('#uploader').pluploadQueue();
+
+        // Files in queue upload them first
+        if (uploader.files.length > 0) {
+            // When all files are uploaded submit form
+            uploader.bind('StateChanged', function() {
+                if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
+                    $('form')[0].submit();
+                }
+            });
+                
+            uploader.start();
+        } else {
+            alert('You must queue at least one file.');
+        }
+
+        return false;
+    });
+});
+       </script>
+  </head>
+  <body>
+   <h1>{% trans %}admin_upload_view{% endtrans %}</h1>
+    
+    <form>
+      <div id="uploader">
+          <p>You browser doesn't have Flash or HTML5 support.</p>
+      </div>
+    </form>
+   <div id="log">
+   
+   </div>
+  </body>
+</html>
