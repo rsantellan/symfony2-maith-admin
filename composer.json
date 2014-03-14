@@ -1,5 +1,5 @@
 {
-    "name": "rodrigosantellan/maith-admin",
+    "name": "Maith/Common/AdminBundle",
     "type": "symfony-bundle",
     "description": "This is a basic admin interface for projects",
     "keywords": ["admin", "bundle", "basic"],
