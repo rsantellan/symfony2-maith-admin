@@ -18,7 +18,7 @@
         "symfony/framework-bundle": "2.3.*"
     },
     "autoload": {
-        "psr-0": { "MaithCommonAdminBundle": "" }
+        "psr-0": { "Maith\\Common\\AdminBundle": "" }
     },
     "minimum-stability": "dev"
 }
