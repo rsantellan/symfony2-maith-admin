@@ -17,6 +17,5 @@
     "require-dev": {
         "symfony/framework-bundle": "2.3.*"
     },
-    "minimum-stability": "dev",
-    "target-dir": "Maith/Common/AdminBundle"
+    "minimum-stability": "dev"
 }
