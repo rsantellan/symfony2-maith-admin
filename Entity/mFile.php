@@ -263,8 +263,8 @@ class mFile {
     public function simpleRemoveFiles()
     {
         //Chanchada para salir del paso!
-        $location = __DIR__.'/../../../../../app/cache';
-        $this->removeAllFiles($location);
+        //$location = __DIR__.'/../../../../../app/cache';
+        //$this->removeAllFiles($location);
     }
     
     public function removeAllFiles($location)
