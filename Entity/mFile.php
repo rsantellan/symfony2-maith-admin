@@ -256,16 +256,7 @@ class mFile {
     {
         return $this->showName;
     }
-    
-    /**
-    * @ORM\PreRemove
-    */
-    public function simpleRemoveFiles()
-    {
-        //Chanchada para salir del paso!
-        //$location = __DIR__.'/../../../../../app/cache';
-        //$this->removeAllFiles($location);
-    }
+
     
     public function removeAllFiles($location)
     {
