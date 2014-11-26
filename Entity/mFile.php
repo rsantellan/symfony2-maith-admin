@@ -75,6 +75,15 @@ class mFile {
      */
     private $showName = "";
     
+    
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+        
     /**
      * Get id
      *
@@ -269,4 +278,12 @@ class mFile {
       }
       @unlink($this->getFullPath());
     }
+    
+    public function getCreated() {
+      return $this->created;
+    }
+
+    public function setCreated($created) {
+      $this->created = $created;
+    }    
 }
