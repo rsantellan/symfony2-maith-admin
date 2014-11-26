@@ -1,0 +1,25 @@
+<div class="col-lg-12">
+{% for album in albums%}
+<div id="album_{{ album.id}}" class="panel panel-default">
+  
+    {{ album.name }}
+    <a class="album_uploader_link" href="{{ path('maith_admin_media_upload', {'id': album.id})}}">{% trans %}maith_images_admin_upload{% endtrans %}</a>
+    
+    <table class="table table-striped no-margin">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ include('MaithCommonAdminBundle:Albums:showAlbumFilesList.html.twig', {'files': album.files}) }}
+      </tbody>
+    </table>
+</div>
+{% endfor %}
+<input type="hidden" value="{{ path('maith_admin_media_refresh_album', { 'list' : 1 })}}" id="refreshAlbumUrl" />
+</div>

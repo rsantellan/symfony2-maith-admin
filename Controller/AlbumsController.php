@@ -27,7 +27,7 @@ class AlbumsController extends Controller
         exit(0);
     }
     
-    public function albumsDataAction($id, $objectclass)
+    public function albumsDataAction($id, $objectclass, $listmode = false)
     {
       $em = $this->getDoctrine()->getManager();
       $query = $em->createQuery("select a from MaithCommonAdminBundle:mAlbum a where a.object_id = :id and a.object_class = :object_class")->setParameters(array('id' => $id, 'object_class' => $objectclass));
@@ -54,19 +54,30 @@ class AlbumsController extends Controller
       //var_dump($albums);
       //$imageManager = $this->get('maith_common_image.image.mimage');
       //$imageManager->doResize();
-      return $this->render('MaithCommonAdminBundle:Albums:showAlbums.html.twig', array('albums' => $albums));
+      if(!$listmode){
+        return $this->render('MaithCommonAdminBundle:Albums:showAlbums.html.twig', array('albums' => $albums));
+      }
+      return $this->render('MaithCommonAdminBundle:Albums:showAlbumsList.html.twig', array('albums' => $albums));
     }
     
     
     public function refreshAlbumAction()
     {
-      
+      $listmode = $this->getRequest()->get("list", false);
       $albumId = $this->getRequest()->get("id");
       $em = $this->getDoctrine()->getManager();
       $album = $em->getRepository("MaithCommonAdminBundle:mAlbum")->find($albumId);
       
       $response = new JsonResponse();
-      $response->setData(array('status'=> 'OK', 'options' => array('html' => $this->renderView('MaithCommonAdminBundle:Albums:showAlbumFiles.html.twig', array('files' => $album->getFiles())) )));
+      if(!$listmode)
+      {
+        $response->setData(array('status'=> 'OK', 'options' => array('html' => $this->renderView('MaithCommonAdminBundle:Albums:showAlbumFiles.html.twig', array('files' => $album->getFiles())) )));
+      }
+      else
+      {
+        $response->setData(array('status'=> 'OK', 'options' => array('html' => $this->renderView('MaithCommonAdminBundle:Albums:showAlbumFilesList.html.twig', array('files' => $album->getFiles())) )));
+      }
+      
       return $response;
     }
     
