@@ -23,3 +23,8 @@ services:
         class: Maith\Common\AdminBundle\Listener\DeleteListener
         tags:
             -  { name: doctrine.event_listener, event: preRemove }
+
+    media_gallery_manager:
+        class: "Maith\Common\AdminBundle\Model\GalleryManager"
+        arguments: 
+             - "%kernel.root_dir%"

@@ -63,3 +63,15 @@ maith_admin_media_gallery_actual_upload:
 maith_admin_media_gallery_remove:
     pattern:  /admin/media/remove/{gallery}/{file}
     defaults: { _controller: MaithCommonAdminBundle:Albums:removeGalleryFile }
+
+maith_admin_gallery_upload_form:
+    path:     /admin/gallery/{name}/form
+    defaults: { _controller: MaithCommonAdminBundle:Gallery:uploadForm }
+
+maith_admin_gallery_do_upload:
+    path:     /admin/gallery/upload-to-gallery
+    defaults: { _controller: MaithCommonAdminBundle:Gallery:doUpload }
+    
+maith_admin_gallery_refresh:
+    path:     /admin/gallery/refresh
+    defaults: { _controller: MaithCommonAdminBundle:Gallery:refreshGallery }    

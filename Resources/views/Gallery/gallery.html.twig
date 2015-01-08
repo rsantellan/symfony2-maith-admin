@@ -1,0 +1,32 @@
+  {% set gridClass = 'col-md-2' %}
+  {% set open = 'false' %}
+  {% set counter = 0 %}
+  {% for file in files%}
+    {% if counter == 0 %}
+    <div class="row show-grid">
+    {% set open = 'true' %}  
+    {% endif %}
+    {% set counter = counter + 1 %}
+      <div class="{{gridClass}}" id="file_container_{{file.fileName}}">
+        <div class="img_thumb_container">
+          <div class="img_edit">
+          </div>
+          <img alt="{{ file.fileName }}" src="{{ file.pathName | mImage(150, 150, 'rce') }}" />
+          <div class="img_delete">
+            <a onclick="imagesManager.getInstance().removeImage('{#{ path('maith_admin_galleries') }#}', '{% trans %}maith_images_admin_delete_confirmation{% endtrans %}');" href="javascript:void(0)" class="">
+              <img src="{{ asset('bundles/maithcommonimage/images/delete.png') }}" />
+            </a>
+          </div>
+        </div>
+      </div>
+     {% set gridClass = 'col-md-2' %}  
+
+    {%  if counter is divisibleby(6) %}
+      </div>
+     {% set open = 'false' %}
+     {% set counter = 0 %}
+    {% endif %}
+  {% endfor %}
+  {% if open == 'true' %}
+  </div>
+  {% endif %}
