@@ -33,22 +33,7 @@ galleryManager.prototype = {
     {
       $(".album_uploader_link").colorbox({iframe: true, width: "80%", height: "80%"});
     },
-    /*
-    initializeAlbumSortableBox: function()
-    {
-      $(".album_sortable_link").each(function(){
-        var object = $(this);
-        object.colorbox({
-          iframe: true, 
-          width: "80%", 
-          height: "80%", 
-          onClosed:function(){ 
-            galleryManager.getInstance().refreshAlbums(object.attr("albumId"));
-          }
-        });
-      });
-    },
-    */
+    
     refreshGallery: function(gallery)
     {
       $.ajax({
@@ -68,8 +53,15 @@ galleryManager.prototype = {
       return false; 
     },
     
-    removeImage: function(mUrl, confirmationText, itemId)
+    removeImage: function(mUrl, confirmationText, element)
     {
+      /*
+      console.log(element);
+      console.log($(element));
+      console.log($(element).parent());
+      console.log($(element).parent().parent());
+      */
+      
       if(confirm(confirmationText))
       {
         $.ajax({
@@ -78,58 +70,21 @@ galleryManager.prototype = {
           dataType: 'json',
           success: function(json)
           {
-            if(json.status == "OK")
+            if(json.result == "true" || json.result == true)
             {
-              $('#file_container_' + itemId).fadeOut(500, function() {$(this).remove();});
+              $(element).parent().parent().parent().fadeOut(500, function(){
+                $(this).remove();
+              });
+              //$('#file_container_' + itemId).fadeOut(500, function() {$(this).remove();});
             }
           }        
         });
       }
       
     }
-    /*
-    ,
-    createColorboxMiniatureFrames: function()
-    {
-      $('.img_edit a').colorbox();
-    },
-    
-    saveFileEditForm: function(form)
-    {
-      $("#saving_image_admin_file").show();
-      $(".admin_file_action_button").hide();
-      $.ajax({
-          url: $(form).attr('action'),
-          data: $(form).serialize(),
-          type: 'post',
-          dataType: 'json',
-          success: function(json){
-              if(json.result == "false" || json.result == false)
-              {
-                $("#form_errors_admin_file").html(json.errors);
-                console.log(json.errors);
-              }
-              else
-              {
-                $("#form_errors_admin_file").html(" ");
-              }
-          }
-          , 
-          complete: function()
-          {
-            $.colorbox.resize();
-            $("#saving_image_admin_file").hide();
-            $(".admin_file_action_button").show();
-          }
-      });
-      return false; 
-    }
-    */
 }
 
 $( document ).ready(function() {
     galleryManager.getInstance().hoverImages();
     galleryManager.getInstance().initializeAlbumUploaderBox();
-    //galleryManager.getInstance().initializeAlbumSortableBox();
-    //galleryManager.getInstance().createColorboxMiniatureFrames();
 });

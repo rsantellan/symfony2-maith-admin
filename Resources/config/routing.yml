@@ -75,3 +75,11 @@ maith_admin_gallery_do_upload:
 maith_admin_gallery_refresh:
     path:     /admin/gallery/refresh
     defaults: { _controller: MaithCommonAdminBundle:Gallery:refreshGallery }    
+    
+maith_admin_gallery_download_file:
+    path:     /admin/gallery/{gallery}/download/{file}
+    defaults: { _controller: MaithCommonAdminBundle:Gallery:downloadFile }
+    
+maith_admin_gallery_remove_file:
+    path:     /admin/gallery/{gallery}/remove/{file}
+    defaults: { _controller: MaithCommonAdminBundle:Gallery:removeFile }     

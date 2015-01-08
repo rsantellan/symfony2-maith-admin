@@ -66,16 +66,55 @@ class GalleryManager {
     public function getGalleryFiles($gallery)
     {
       $targetDir = $this->getGalleriesFullPath().DIRECTORY_SEPARATOR.$gallery;
+      $files = array();
+      if(!is_dir($targetDir))
+      {
+        return $files;
+      }
       $fileFinder = new Finder();
       $fileFinder->in($targetDir)->files()->sortByChangedTime();
-      $files = array();
+      
       foreach($fileFinder->getIterator() as $file)
       {
         $files[] = $file;
       }
       return $files;
     }
+    
+    public function getGalleryFile($gallery, $filename)
+    {
+      $targetDir = $this->getGalleriesFullPath().DIRECTORY_SEPARATOR.$gallery;
+      if(!is_dir($targetDir))
+      {
+        return null;
+      }
+      $files = array();
+      $fileFinder = new Finder();
+      $fileFinder->in($targetDir)->files()->name($filename);
+      foreach($fileFinder->getIterator() as $file)
+      {
+        $files[] = $file;
+      }
+      return array_pop($files);
+    }
 
+    public function removeGalleryFile($gallery, $filename)
+    {
+      $targetDir = $this->getGalleriesFullPath().DIRECTORY_SEPARATOR.$gallery;
+      if(!is_dir($targetDir))
+      {
+        return null;
+      }
+      $files = array();
+      $fileFinder = new Finder();
+      $fileFinder->in($targetDir)->files()->name($filename);
+      foreach($fileFinder->getIterator() as $file)
+      {
+        $files[] = $file;
+      }
+      $spFile = array_pop($files);
+      return @unlink($spFile->getPathName());
+    }
 }
 
 

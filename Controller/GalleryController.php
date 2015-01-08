@@ -108,4 +108,27 @@ class GalleryController extends Controller
       return $response;
     }
 
+    public function downloadFileAction($gallery, $file)
+    {
+      $mediaGallery = $this->get('media_gallery_manager');
+      $fileObject = $mediaGallery->getGalleryFile($gallery, $file);
+      $content = $fileObject-> getContents();
+      $response = new Response();
+      $fileMetadata = $this->retrieveExtensionAndMiMeType($fileObject->getFilename());
+      $response->headers->set('Content-Type', $fileMetadata['mime']);
+      $response->headers->set('Content-Disposition', 'attachment;filename="'.$fileObject->getFilename());
+      $response->setContent($content);
+      return $response;
+    }
+    
+    public function removeFileAction($gallery, $file)
+    {
+      $mediaGallery = $this->get('media_gallery_manager');
+      $result = $mediaGallery->removeGalleryFile($gallery, $file);
+      $response = new JsonResponse();
+      $response->setData(array(
+          'result' => $result          
+      ));
+      return $response;
+    }
 }

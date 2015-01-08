@@ -10,10 +10,13 @@
       <div class="{{gridClass}}" id="file_container_{{file.fileName}}">
         <div class="img_thumb_container">
           <div class="img_edit">
+              <a href="{{ path('maith_admin_gallery_download_file', {'gallery' : name, 'file' : file.fileName}) }}">
+                <img src="{{ asset('bundles/maithcommonadmin/images/download_link.png') }}" />  
+              </a>
           </div>
           <img alt="{{ file.fileName }}" src="{{ file.pathName | mImage(150, 150, 'rce') }}" />
           <div class="img_delete">
-            <a onclick="imagesManager.getInstance().removeImage('{#{ path('maith_admin_galleries') }#}', '{% trans %}maith_images_admin_delete_confirmation{% endtrans %}');" href="javascript:void(0)" class="">
+            <a onclick="galleryManager.getInstance().removeImage('{{ path('maith_admin_gallery_remove_file', {'gallery' : name, 'file' : file.fileName}) }}', '{% trans %}maith_images_admin_delete_confirmation{% endtrans %}', this);" href="javascript:void(0)" class="">
               <img src="{{ asset('bundles/maithcommonimage/images/delete.png') }}" />
             </a>
           </div>
