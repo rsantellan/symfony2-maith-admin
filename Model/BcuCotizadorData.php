@@ -87,7 +87,7 @@ class BcuCotizadorData {
                 $ui['currency'] = trim(substr($line, 17, 16));
                 $ui['code'] = trim(substr($line, 40, 4));
                 $aux = explode(' ', trim(substr($line, 54, 61)));
-                $ui['values'][$aux[3]] = $aux[0];
+                $ui['values'][$aux[2]] = $aux[0];
                 $finalData['cotizaciones']['ui'] = $ui;
             }
             $counter ++;
