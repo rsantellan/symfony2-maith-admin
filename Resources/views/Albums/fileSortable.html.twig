@@ -30,7 +30,13 @@
      {% for file in album.files %}
       
         <li id="listItem_{{ file.id }}">
-          <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(100, 100, 't') }}" />
+          {% if file.type == 'youtube' or  file.type == 'vimeo' %}
+          <img alt="{{ file.showName }}" src="{{ file.thumb }}" width="100" height="100" />
+          {% else %}
+            <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(100, 100, 't') }}" />
+          {% endif %}
+          
+          
         </li>
       {% endfor %}
     </ul>
