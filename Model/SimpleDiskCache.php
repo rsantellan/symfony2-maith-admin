@@ -34,10 +34,13 @@ class SimpleDiskCache {
             return FALSE;
         }
 
-        if (filemtime($cache_path) < (time() - $expiration))
+        if($expiration > 0)
         {
-            $this->clear($key);
-            return FALSE;
+          if (filemtime($cache_path) < (time() - $expiration))
+          {
+              $this->clear($key);
+              return FALSE;
+          }
         }
 
         if (!$fp = @fopen($cache_path, 'rb'))

@@ -5,6 +5,8 @@ namespace Maith\Common\AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Finder\Finder;
+use Maith\Common\AdminBundle\Model\SimpleDiskCache;
+use Maith\Common\AdminBundle\Model\OEmbededHandler;
 
 /**
  * Description of mFile
@@ -16,6 +18,9 @@ use Symfony\Component\Finder\Finder;
  */
 class mFile {
 
+  
+    private $cachedata;
+    
     /**
      * @var integer
      *
@@ -75,6 +80,12 @@ class mFile {
      */
     private $showName = "";
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="onlinevideo", type="string", length=255, nullable=true)
+     */
+    private $onlinevideo = "";
     
     /**
      * @var \DateTime $created
@@ -285,5 +296,97 @@ class mFile {
 
     public function setCreated($created) {
       $this->created = $created;
-    }    
+    }
+    
+
+    public function getOnlinevideo() 
+    {
+      return $this->onlinevideo;
+    }
+
+    public function setOnlinevideo($onlinevideo) 
+    {
+      $this->onlinevideo = $onlinevideo;
+      return $this;
+    }
+
+
+    function __construct() 
+    {
+      $this->cachedata = new SimpleDiskCache(sys_get_temp_dir());
+      
+    }
+    
+    
+    public function getThumb()
+    {
+      $wwwData = OEmbededHandler::retrieveData($this->getOnlinevideo());
+      return $wwwData['data']['thumbnail_url'];
+    }
+    
+    public function getOnlineVideoIframe()
+    {
+      $wwwData = OEmbededHandler::retrieveData($this->getOnlinevideo());
+      return $wwwData['data']['html'];
+    }
+    
+    public function getOnlineVideoPlayer()
+    {
+      switch ($this->getType()) {
+        case 'youtube':
+          $string = 'http://www.youtube.com/embed/%s?rel=0&amp;wmode=transparent';
+          return sprintf($string, $this->getYouTubeVideoId($this->getOnlinevideo()));
+          break;
+        case 'vimeo':
+          
+          $wwwData = OEmbededHandler::retrieveData($this->getOnlinevideo());
+          return 'http://player.vimeo.com/video/'.$wwwData['data']['video_id'];
+          break;
+
+        default:
+        break;
+      }
+      
+      // if image.type == 'youtube' or  image.type == 'vimeo'
+      // http://player.vimeo.com/video/
+      
+      // http://www.youtube.com/embed/VOJyrQa_WR4?rel=0&amp;wmode=transparent
+      
+      $wwwData = OEmbededHandler::retrieveData($this->getOnlinevideo());
+      return $wwwData['data']['html'];
+    }
+    
+    private function getYouTubeVideoId($url)
+    {
+        $video_id = false;
+        $url = parse_url($url);
+        if (strcasecmp($url['host'], 'youtu.be') === 0)
+        {
+            #### (dontcare)://youtu.be/<video id>
+            $video_id = substr($url['path'], 1);
+        }
+        elseif (strcasecmp($url['host'], 'www.youtube.com') === 0)
+        {
+            if (isset($url['query']))
+            {
+                parse_str($url['query'], $url['query']);
+                if (isset($url['query']['v']))
+                {
+                    #### (dontcare)://www.youtube.com/(dontcare)?v=<video id>
+                    $video_id = $url['query']['v'];
+                }
+            }
+            if ($video_id == false)
+            {
+                $url['path'] = explode('/', substr($url['path'], 1));
+                if (in_array($url['path'][0], array('e', 'embed', 'v')))
+                {
+                    #### (dontcare)://www.youtube.com/(whitelist)/<video id>
+                    $video_id = $url['path'][1];
+                }
+            }
+        }
+        return $video_id;
+    }
+    
 }

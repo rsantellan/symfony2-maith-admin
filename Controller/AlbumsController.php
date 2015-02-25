@@ -10,12 +10,18 @@ use Maith\Common\AdminBundle\Model\GalleryFile;
 use Maith\Common\AdminBundle\Entity\mFile;
 use Maith\Common\AdminBundle\Entity\mAlbum;
 use Maith\Common\AdminBundle\Form\mFileType;
+use Maith\Common\AdminBundle\Form\mFileVideoType;
+use Maith\Common\AdminBundle\Model\OEmbededHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Finder\Finder;
 
 
 class AlbumsController extends Controller
 {
+  
+    private $VIMEOURl = 'https://vimeo.com/api/oembed.json';
+    private $YOUTUBEURl = 'https://vimeo.com/api/oembed.json';
+    
     public function indexAction()
     {
         return $this->render('MaithCommonAdminBundle:Default:index.html.twig');
@@ -153,7 +159,79 @@ class AlbumsController extends Controller
       $token = $this->container->getParameter('maith_common_admin.upload_token');
       $encrypt = new Encrypt($token);
       
-      return $this->render('MaithCommonAdminBundle:Albums:upload.html.twig', array('albumId' => $id, 'dataSession' => urldecode($encrypt->encrypt(session_id()))));
+      return $this->render('MaithCommonAdminBundle:Albums:upload.html.twig', array(
+          'albumId' => $id, 
+          'dataSession' => urldecode($encrypt->encrypt(session_id())),
+          //'videoform' => $form->createView(),
+        )
+      );
+    }
+    
+    public function onlineVideoFormAction(Request $request, $id)
+    {
+      $myFile = new mFile();
+      $form = $this->createForm(new mFileVideoType(), $myFile, array(
+            //'action' => $this->generateUrl('admin_multimedia_update', array('id' => $entity->getId())),
+            //'method' => 'PUT',
+        ));
+      
+      if ($request->isMethod('POST')) 
+      {
+          $form->bind($request);
+          
+          
+          $response = new JsonResponse();
+          
+          $dataResponse = array(
+              'result' => false,
+              'message' => 'Formulario incorrecto',
+              'albumId' => $id,
+          );
+          $form->isValid();
+          $onlineVideo = $form->getData()->getOnlinevideo();
+          
+          $wwwData = OEmbededHandler::retrieveData($onlineVideo);
+
+          if ($wwwData['videoType'] != NULL) 
+          {
+            
+            if(count($wwwData['data']) > 0 ) 
+            {
+              $em = $this->getDoctrine()->getManager();
+              
+              $myFile->setAlbum($em->getRepository("MaithCommonAdminBundle:mAlbum")->find($id));
+              $myFile->setName($wwwData['data']['title']);
+              $myFile->setPath('.');
+              $myFile->setType($wwwData['videoType']);
+              $myFile->setOnlinevideo($onlineVideo);
+              $myFile->setSfPath('.');
+              $em->persist($myFile);
+              $em->flush();
+              $dataResponse['result'] = true;
+              $message = 'Video guardado con exito';
+            }
+            
+            //$dataResponse['message'] = $message;
+          }
+          else
+          {
+            $view = $this->renderView('MaithCommonAdminBundle:Albums:videoForm.html.twig', array(
+              'albumId' => $id, 
+              'videoform' => $form->createView(),
+            ));
+            $message = 'El video no es de youtube o vimeo';
+            //$response->setData(array('status'=> 'OK', 'options' => array('html' => $view )));
+            $dataResponse['html'] = $view;
+          }
+          $dataResponse['message'] = $message;
+          $response->setData($dataResponse);
+          return $response;
+      }
+      return $this->render('MaithCommonAdminBundle:Albums:videoForm.html.twig', array(
+          'albumId' => $id, 
+          'videoform' => $form->createView(),
+        )
+      );
     }
     
     private function retrieveExtensionAndMiMeType($filename)

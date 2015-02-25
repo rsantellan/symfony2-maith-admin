@@ -16,10 +16,14 @@
       <div class="img_thumb_container">
         <div class="img_edit">
           <a class="edit_file_link" href="{{ path('maith_admin_media_show_file', { 'id' : file.id }) }}">
-            {% trans %}maith_images_admin_edit{% endtrans %}
+            Editar
           </a>
         </div>
-        <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(150, 150, 'rce') }}" />
+        {% if file.type == 'youtube' or  file.type == 'vimeo' %}
+          <img alt="{{ file.showName }}" src="{{ file.thumb }}" width="150" height="150" />
+        {% else %}
+          <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(150, 150, 'rce') }}" />
+        {% endif %}
         <div class="img_delete">
           <a onclick="imagesManager.getInstance().removeImage('{{ path('maith_admin_media_remove', {'id': file.id})}}', '{% trans %}maith_images_admin_delete_confirmation{% endtrans %}', {{ file.id }});" href="javascript:void(0)" class="">
             <img src="{{ asset('bundles/maithcommonimage/images/delete.png') }}" />

@@ -1,4 +1,6 @@
- 
+{% if file.type == 'youtube' or  file.type == 'vimeo' %}
+ {{ file.onlineVideoIframe | raw }}
+{% else %}
 <div class="edit_media_container" id="edit_media_container">
         <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(250, 200, 'mpr') }}" class="edit_media_img" />
         <div style="width: 300px; float: left;">
@@ -26,6 +28,4 @@
         </div>
     <div class="clear"></div>
 </div>
-
-
-
+{% endif %}

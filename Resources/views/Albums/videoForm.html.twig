@@ -1,0 +1,11 @@
+<div class="row" id='video_online_container'>
+<form action="{{ path('maith_admin_media_online_video_upload', {'id': albumId})}}" method="POST" onsubmit="return imagesManager.getInstance().sendOnlineVideoData(this)" role="form">
+    <div class="form-group">
+       {{ form_errors(videoform.onlinevideo) }}
+       <label for="{{ videoform.onlinevideo.vars.id }}">Agregar video: (ingrese la url de youtube)</label>
+       {{ form_widget(videoform.onlinevideo, {'attr' : {'class' : 'form-control'}}) }}
+   </div>
+  {{ form_rest(videoform) }}
+     <input type='submit' value='Agregar' />
+ </form>
+</div>    

@@ -83,3 +83,7 @@ maith_admin_gallery_download_file:
 maith_admin_gallery_remove_file:
     path:     /admin/gallery/{gallery}/remove/{file}
     defaults: { _controller: MaithCommonAdminBundle:Gallery:removeFile }     
+    
+maith_admin_media_online_video_upload:
+    pattern:  /admin/media/online-video/{id}
+    defaults: { _controller: MaithCommonAdminBundle:Albums:onlineVideoForm }    
