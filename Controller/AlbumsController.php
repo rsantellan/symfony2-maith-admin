@@ -43,6 +43,11 @@ class AlbumsController extends Controller
         $obj = new $objectclass;
         if(method_exists($obj, 'retrieveAlbums'))
         {
+          $checkForOnlineVideos = false;
+          if(method_exists($obj, 'checkAlbumForOnlineVideo'))
+          {
+              $checkForOnlineVideos = true;
+          }
           // var_dump('estoy aca');
           foreach($obj->retrieveAlbums() as $name)
           {
@@ -50,6 +55,10 @@ class AlbumsController extends Controller
             $album->setObjectId($id);
             $album->setObjectClass($objectclass);
             $album->setName($name);
+            if($checkForOnlineVideos)
+            {
+              $album->setHasonlinevideo($obj->checkAlbumForOnlineVideo($name));
+            }
             $em->persist($album);       
           }
           $em->flush();

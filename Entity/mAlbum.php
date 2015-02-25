@@ -45,6 +45,13 @@ class mAlbum {
   private $object_class;
 
   /**
+  * @var boolean
+  *
+  * @ORM\Column(name="hasonlinevideo", type="boolean", nullable=true)
+  */
+  private $hasonlinevideo = false;
+  
+  /**
    * var Projects
    * @ORM\OneToMany(targetEntity="mFile", mappedBy="album", cascade={"remove"})
    * @ORM\OrderBy({"orden" = "ASC"})
@@ -169,4 +176,13 @@ class mAlbum {
     {
         return $this->files;
     }
+    
+    public function getHasonlinevideo() {
+      return $this->hasonlinevideo;
+    }
+
+    public function setHasonlinevideo($hasonlinevideo) {
+      $this->hasonlinevideo = $hasonlinevideo;
+    }
+
 }
