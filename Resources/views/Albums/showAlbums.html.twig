@@ -2,10 +2,10 @@
 {% for album in albums%}
 <div id="album_{{ album.id}}" class="panel panel-default">
   <div class="panel-heading">
-    {{ album.name }}
-    <a class="album_uploader_link" href="{{ path('maith_admin_media_upload', {'id': album.id})}}">{% trans %}maith_images_admin_upload{% endtrans %}</a>
+    <h3>{{ album.name }}</h3>
+    <a class="album_uploader_link btn btn-primary" href="{{ path('maith_admin_media_upload', {'id': album.id})}}">{% trans %}maith_images_admin_upload{% endtrans %}</a>
     {% if album.hasonlinevideo %}
-    <a class="album_uploader_video_link" href="{{ path('maith_admin_media_online_video_upload', {'id': album.id})}}">Agregar video</a>
+    <a class="album_uploader_video_link btn btn-warning" href="{{ path('maith_admin_media_online_video_upload', {'id': album.id})}}">Agregar video</a>
     {% endif %}
   </div>
   <div class="panel-body img_thumb_ul">
