@@ -19,10 +19,22 @@
             Editar
           </a>
         </div>
-        {% if file.type == 'youtube' or  file.type == 'vimeo' %}
+        {% if file.isOnlineVideo %}
           <img alt="{{ file.showName }}" src="{{ file.thumb }}" width="150" height="150" />
         {% else %}
-          <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(150, 150, 'rce') }}" />
+          {% if file.isImage %}
+            <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(150, 150, 'rce') }}" />
+          {% else %}
+            <label style='float: left'>
+            {% if file.showName == '' %}
+                {{ file.name }}
+            {% else %}
+                {{ file.showName }}
+            {% endif %}
+            </label>
+            <br/>
+            <img src="{{ asset('bundles/maithcommonimage/images/' ~ file.knownFileExtension ~ '.png') }}"  width='80' height='80' />
+          {% endif %}
         {% endif %}
         <div class="img_delete">
           <a onclick="imagesManager.getInstance().removeImage('{{ path('maith_admin_media_remove', {'id': file.id})}}', '{% trans %}maith_images_admin_delete_confirmation{% endtrans %}', {{ file.id }});" href="javascript:void(0)" class="">

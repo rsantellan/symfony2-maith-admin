@@ -18,8 +18,20 @@ use Maith\Common\AdminBundle\Model\OEmbededHandler;
  */
 class mFile {
 
-  
+    /**
+     * 
+     * Cache for using with online videos.
+     * 
+     **/   
     private $cachedata;
+    
+    
+    private $imagesTypes = array(
+        'image/gif',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png',
+    );
     
     /**
      * @var integer
@@ -389,4 +401,66 @@ class mFile {
         return $video_id;
     }
     
+    public function isOnlineVideo()
+    {
+        if($this->getType() == 'youtube' || $this->getType() == 'vimeo')
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    public function isImage()
+    {
+        if(in_array($this->getType(), $this->imagesTypes))
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    public function getFileExtension()
+    {
+        return strtolower(substr(strrchr($this->getName(), "."), 1));
+    }
+    
+    public function getKnownFileExtension()
+    {
+        $return = '';
+        switch($this->getFileExtension())
+        {
+            case 'xls':
+            case 'xlsx':
+            case 'ods':
+                $return = 'excel';
+            break;
+            
+            case 'doc':
+            case 'docx':
+            case 'odt':
+                $return = 'word';
+            break;
+            
+            case 'ppt':
+            case 'pptx':
+            case 'ott':
+                $return = 'powerpoint';
+            break;
+            
+            case 'rtf':
+            case 'txt':
+            case 'pub':
+                $return = 'text';
+            break;
+            
+            case 'pdf':
+                $return = 'pdf';
+            break;
+            
+            default:
+                $return = 'other';
+            break;
+        }
+        return $return;
+    }
 }

@@ -288,7 +288,13 @@ class AlbumsController extends Controller
       $mimeAndName = null;
       if(function_exists('finfo_open'))
       {
-          $name = uniqid() . '.' . $fileUploaded->guessExtension();
+          $extension = $fileUploaded->guessExtension();
+          if($extension == '' || $extension == 'bin')
+          {
+              $mimeAndName = $this->retrieveExtensionAndMiMeType($fileUploaded->getClientOriginalName());
+              $extension = $mimeAndName['extension'];
+          }
+          $name = uniqid() . '.' . $extension;
       }
       else
       {
