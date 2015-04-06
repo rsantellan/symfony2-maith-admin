@@ -5,7 +5,7 @@
         {% if file.isImage %}
         <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(250, 200, 'mpr') }}" class="edit_media_img" />
         {% else %}
-        <img src="{{ asset('bundles/maithcommonimage/images/' ~ file.knownFileExtension ~ '.png') }}"  width='200' height='200' />
+        <img src="{{ asset('bundles/maithcommonadmin/images/' ~ file.knownFileExtension ~ '.png') }}"  width='200' height='200' />
        {% endif %}
         <div style="width: 300px; float: left;">
           <form onsubmit="parent.imagesManager.getInstance().saveFileEditForm(this); return false;" action="{{ path('maith_admin_media_update_file_name', { 'id': file.id }) }}" method="post" {{ form_enctype(form) }}>
