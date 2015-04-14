@@ -29,6 +29,7 @@ class mFile {
     private $imagesTypes = array(
         'image/gif',
         'image/jpeg',
+        'image/jpg',
         'image/pjpeg',
         'image/png',
     );
