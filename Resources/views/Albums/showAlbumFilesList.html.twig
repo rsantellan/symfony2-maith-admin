@@ -1,13 +1,21 @@
 {% for file in files%}
-  <tr>
-    <td><img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(50, 50, 'rce') }}" /></td>
+  <tr id="file_container_{{ file.id }}">
+    <td>
+      {% if file.isImage %}
+      <img alt="{{ file.showName }}" src="{{ file.fullPath | mImage(50, 50, 'rce') }}" />
+      {% else %}
+      <img alt="{{ file.showName }}" src="{{ asset('bundles/maithcommonadmin/images/' ~ file.knownFileExtension ~ '.png') }}" width="50" height="50" />
+      {% endif %}
+    </td>
     <td>{{ file.showName }}</td>
     <td>{{ file.type }}</td>
     <td>{{ file.created | date() }}</td>
-    <td class='img_edit'>
-      <a class="edit_file_link" href="{{ path('maith_admin_media_show_file', { 'id' : file.id }) }}">
-        {% trans %}maith_images_admin_edit{% endtrans %}
-      </a>
+    <td>
+      <span class='img_edit'>
+        <a class="edit_file_link" href="{{ path('maith_admin_media_show_file', { 'id' : file.id }) }}">
+          <img alt="{{ file.showName }}" src="{{ asset('bundles/maithcommonadmin/images/edit.png') }}" alt="{% trans %}maith_images_admin_edit{% endtrans %}"/>
+        </a>
+      </span>
       <a onclick="imagesManager.getInstance().removeImage('{{ path('maith_admin_media_remove', {'id': file.id})}}', '{% trans %}maith_images_admin_delete_confirmation{% endtrans %}', {{ file.id }});" href="javascript:void(0)" class="">
         <img src="{{ asset('bundles/maithcommonimage/images/delete.png') }}" />
       </a>
