@@ -349,16 +349,17 @@ class AlbumsController extends Controller
       if (!$entity) {
           throw $this->createNotFoundException('Unable to find mFile entity.');
       }
-       $form   = $this->createForm(new mFileType(), $entity);
-       $form->bind($request);
-       $valid = false;
-       if($form->isValid())
-       {
-         $valid = true;
-         $em->persist($entity);
-         $em->flush();
-       }
-       return new Response(json_encode(array("result" => $valid, 'errors' => $form->getErrorsAsString())));
+      $albumId = $entity->getAlbum()->getId();
+      $form   = $this->createForm(new mFileType(), $entity);
+      $form->bind($request);
+      $valid = false;
+      if($form->isValid())
+      {
+        $valid = true;
+        $em->persist($entity);
+        $em->flush();
+      }
+      return new Response(json_encode(array("result" => $valid, 'albumId' => $albumId,'errors' => $form->getErrorsAsString())));
     }
     
     public function downloadOriginalFileAction($id)
