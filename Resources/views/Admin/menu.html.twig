@@ -1,0 +1,49 @@
+{% if (smallnavigation is defined) and smallnavigation %}
+<nav class="main-navigation">
+{% else %}
+<nav class="main-navigation slimscroll" data-height="auto" data-size="4px" data-color="#ddd" data-distance="0">
+{% endif %}
+  <ul>
+	<li>
+      <a href="{{ path('maith_admin_homepage')}}">
+        <i class="fa fa-coffee"></i>
+		<span>{% trans %}admin_menu_home{% endtrans %}</span>
+      </a>
+	</li>
+	{% if is_expr_granted("hasRole('ROLE_VIEW_USERS') or hasRole('ROLE_VIEW_PERMISSION_GROUPS')") %}
+    <li class="dropdown{% if (activemenu is defined) and activemenu == 'users' %} collapse-open open{% endif %}">
+      <a href="javascript:;" data-toggle="dropdown">
+        <i class="fa fa-user"></i>
+		<span>{% trans %}admin_menu_tab_usuarios{% endtrans %}</span>
+		<i class="toggle-accordion"></i>
+      </a>
+      <ul class="dropdown-menu">
+		{% if is_expr_granted("hasRole('ROLE_VIEW_USERS')") %}
+        <li class="{% if (activesubmenu is defined) and activesubmenu == 'users' %}active{%endif%}">
+		  <a href="{{ path('user')}}">
+			<span>{% trans %}admin_menu_usuarios{% endtrans %}</span>
+		  </a>
+		</li>
+		{% endif %}
+		{% if is_expr_granted("hasRole('ROLE_VIEW_PERMISSION_GROUPS')") %}
+        <li class="{% if (activesubmenu is defined) and activesubmenu == 'usersgrouproles' %}active{%endif%}">
+		  <a href="{{ path('grouprole')}}">
+			<span>{% trans %}admin_menu_grupos_roles{% endtrans %}</span>
+		  </a>
+		</li>
+		{% endif %}
+      </ul>  
+    </li>
+	{% endif %}
+
+	{{ include('MaithCommonAdminBundle:Admin:menuoptions.html.twig') }}
+    {% if is_expr_granted("hasRole('ROLE_VIEW_TRANSLATOR')") %}
+    <li>
+		<a href="{{ path('maith_common_translator_homepage')}}">
+			<i class="fa fa-file-text-o"></i>
+			<span>{% trans %}admin_menu_textos{% endtrans %}</span>
+		</a>
+	</li>
+    {% endif %}
+  </ul>
+</nav>

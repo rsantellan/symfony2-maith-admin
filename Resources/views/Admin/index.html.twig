@@ -1,0 +1,72 @@
+{% extends 'MaithTekoaBundle::adminlayout.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('bundles/maithtekoa/admin/vendor/calculator/jquery.calculator.alt.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('bundles/maithtekoa/admin/vendor/calculator/jquery.plugin.min.js') }}"></script> 
+<script type="text/javascript" src="{{ asset('bundles/maithtekoa/admin/vendor/calculator/jquery.calculator.min.js') }}"></script> 
+<script type="text/javascript" src="{{ asset('bundles/maithtekoa/admin/vendor/calculator/jquery.calculator-es.js') }}"></script> 
+<script type="text/javascript" src="{{ asset('bundles/maithtekoa/admin/js/index.js') }}"></script> 
+{% endblock %}
+
+
+{% block body %}
+<!-- content wrapper -->
+<div class="content-wrap">
+  <div class="row">
+    <div class="col-md-6">
+
+      <div class="panel panel-color">
+        <div class="panel-heading">
+          Cotizaciones
+          <small class="pull-right text-white">
+            <a class="fa fa-chevron-down panel-collapsible pd-r-xs" href="javascript:;"></a>
+            <a class="fa fa-times panel-remove" href="javascript:;"></a>
+          </small>
+        </div>
+        <div class="panel-body">
+          <table class="table table-striped no-margin">
+            <thead>
+              <tr>
+                <th>Pais</th>
+                <th>Moneda</th>
+                <th>Codigo</th>
+                <th>Arbitraje</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for dato in cotizaciones %}
+                <tr>
+                  <td>{{ dato.country }}</td>
+                  <td>{{ dato.currency }}</td>
+                  <td>{{ dato.code }}</td>
+                  <td>{{ dato.exchange }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+      
+    <div class="col-md-3">
+      <div class="panel panel-color">
+        <div class="panel-heading">
+          Calculadora
+          <small class="pull-right text-white">
+            <a class="fa fa-chevron-down panel-collapsible pd-r-xs" href="javascript:;"></a>
+            <a class="fa fa-times panel-remove" href="javascript:;"></a>
+          </small>
+        </div>
+        <div class="panel-body">
+          <div id="calculator_setup">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
