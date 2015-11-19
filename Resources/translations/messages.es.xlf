@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="es" datatype="plaintext" original="file.ext">
+  <file source-language="en" target-language="es" datatype="plaintext" original="file.ext">
     <body>
       <trans-unit id="3058f705416b84dab01d8f41d44b557c" resname="admin_sortable_title">
         <source>admin_sortable_title</source>
@@ -69,6 +69,26 @@
       <trans-unit id="6a6442b5797804a3c26503d9a2f74569" resname="maith_images_admin_show_name">
         <source>maith_images_admin_show_name</source>
         <target>Nombre a mostrar</target>
+      </trans-unit>
+      <trans-unit id="a6681cd0cc0be66da8b99c5f45857c7d" resname="admin_menu_home">
+        <source>admin_menu_home</source>
+        <target>__admin_menu_home</target>
+      </trans-unit>
+      <trans-unit id="b8c5d65262a075cf3f81c96367170f7f" resname="admin_menu_tab_usuarios">
+        <source>admin_menu_tab_usuarios</source>
+        <target>__admin_menu_tab_usuarios</target>
+      </trans-unit>
+      <trans-unit id="5da0cfbc35a9a95af20bc2133bb62682" resname="admin_menu_usuarios">
+        <source>admin_menu_usuarios</source>
+        <target>__admin_menu_usuarios</target>
+      </trans-unit>
+      <trans-unit id="9daf39fc23717754a37aa366a73b9bdf" resname="admin_menu_grupos_roles">
+        <source>admin_menu_grupos_roles</source>
+        <target>__admin_menu_grupos_roles</target>
+      </trans-unit>
+      <trans-unit id="8e495476b2c1ec3576dd389843592f52" resname="admin_menu_textos">
+        <source>admin_menu_textos</source>
+        <target>__admin_menu_textos</target>
       </trans-unit>
     </body>
   </file>
