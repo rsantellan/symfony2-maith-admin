@@ -44,22 +44,12 @@ class mAvatarExtension extends \Twig_Extension
     {
         return $file->getFullPath();
     }
-    return $this->rootDir."/../web/bundles/maithcommonimage/images/noimage.png";
-    
-    $album = $query->getOneOrNullResult();
-    if(!is_null($album))
+    $firstPath = $this->rootDir.'/../web/images/noimage.png';
+    if(is_file($firstPath))
     {
-      $files = $album->getFiles();
-      $file = null;
-      if($files->count() > 0)
-      {
-        $file = $files->get(0);
-        return $file->getFullPath();
-      }
+      return $firstPath;
     }
-    
     return $this->rootDir."/../web/bundles/maithcommonimage/images/noimage.png";
-    
   }
 
   public function getName() {
