@@ -86,8 +86,12 @@ class BcuCotizadorData {
                 $ui['country'] = trim(substr($line, 0, 16));
                 $ui['currency'] = trim(substr($line, 17, 16));
                 $ui['code'] = trim(substr($line, 40, 4));
-                $aux = explode(' ', trim(substr($line, 54, 61)));
-                $ui['values'][$aux[2]] = $aux[0];
+                $separator = ' Valor ';
+                $aux = explode($separator, trim(substr($line, 54, 61)));
+                if(isset($aux[1]))
+                {
+                    $ui['values'][$aux[1]] = $aux[0];
+                }
                 $finalData['cotizaciones']['ui'] = $ui;
             }
             $counter ++;
@@ -103,14 +107,16 @@ class BcuCotizadorData {
         return $this->retrieveBcuCotization(sprintf('http://bcu.gub.uy/Cotizaciones/oicot%s.txt', date('dmy')));
     }
     
-    public function retrieveLastUsableBcuCotizacion($useCache = true)
+    public function retrieveLastUsableBcuCotizacion($useCache = true, $d1 = null)
     {
         $lastdate = $this->cachedata->get('lastusedurl', 86400);
         if($lastdate && $useCache)
         {
           return $this->retrieveBcuCotization(sprintf('http://bcu.gub.uy/Cotizaciones/oicot%s.txt', $lastdate));
         }
-        $d1 = new \DateTime();
+        if($d1 == null){
+          $d1 = new \DateTime();
+        }
         $data = null;
         $found = false;
         while(!$found)
@@ -128,6 +134,7 @@ class BcuCotizadorData {
         }
         return $data;
     }
+    
 }
 
 

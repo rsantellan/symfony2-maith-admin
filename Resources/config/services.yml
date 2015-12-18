@@ -1,4 +1,5 @@
 parameters:
+     maith_common.bcucotizador.class: Maith\Common\AdminBundle\Services\BcuCotizadorService
 #    maith_common_admin.example.class: Maith\Common\AdminBundle\Example
 
 services:
@@ -24,6 +25,10 @@ services:
         tags:
             -  { name: doctrine.event_listener, event: preRemove }
 
+    maith_common.bcucotizador:
+        class: %maith_common.bcucotizador.class%
+        arguments: [@doctrine.orm.entity_manager]
+        
     media_gallery_manager:
         class: "Maith\Common\AdminBundle\Model\GalleryManager"
         arguments: 
