@@ -43,12 +43,14 @@ class BcuCotizadorService {
           'arbitrajes' => array(),
           'cotizaciones' => array(
               'monedas' => array(),
-              'ui' => array()
+              'ui' => array('values' => array())
               ),
           );
     $finalData = $this->retrieveLastCotizaciones($finalData);
     
-    $finalData = $this->retrieveUiOfLastMonth($finalData);
+    return $this->retrieveUiOfLastMonth($finalData);
+    
+    
   }
   
   public function retrieveLastCotizaciones($finalData = null)
@@ -59,7 +61,7 @@ class BcuCotizadorService {
           'arbitrajes' => array(),
           'cotizaciones' => array(
               'monedas' => array(),
-              'ui' => array()
+              'ui' => array('values' => array())
               ),
           );
     }
@@ -113,12 +115,20 @@ class BcuCotizadorService {
           'arbitrajes' => array(),
           'cotizaciones' => array(
               'monedas' => array(),
-              'ui' => array()
+              'ui' => array('values' => array())
               ),
           );
     }
-    
-    
+    $sql = "select id, value, valueDate from maith_bcu_ui where valueDate <= DATE_FORMAT(NOW() ,'%Y-%m-01') order by valueDate desc limit 5";
+    $conn = $this->em->getConnection();
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $list = $stmt->fetchAll();
+    foreach($list as $uiData)
+    {
+      $finalData['cotizaciones']['ui']['values'][$uiData["valueDate"]] = $uiData["value"];
+    }
+    return $finalData;
     
   }
   
