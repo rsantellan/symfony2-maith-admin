@@ -123,11 +123,11 @@ class mBcuDataType
     /**
      * Add option
      *
-     * @param \AppBundle\Entity\Displaygroupelementoption $option
+     * @param mBcuCotizacion $option
      *
      * @return Displaygroupelement
      */
-    public function addDataValues(\AppBundle\Entity\Displaygroupelementoption $option)
+    public function addDataValues(mBcuCotizacion $option)
     {
         $this->dataValues[] = $option;
 
@@ -137,9 +137,9 @@ class mBcuDataType
     /**
      * Remove option
      *
-     * @param \AppBundle\Entity\Displaygroupelementoption $option
+     * @param mBcuCotizacion $option
      */
-    public function removeDataValues(\AppBundle\Entity\Displaygroupelementoption $option)
+    public function removeDataValues(mBcuCotizacion $option)
     {
         $this->dataValues->removeElement($option);
     }
