@@ -820,6 +820,7 @@ $files=array_merge(array($prev_folder),array($current_folder),$sorted);
 						$src_thumb=$mini_src="";
 			    }
 				}
+                $src_thumb = str_replace('/web','',$src_thumb);
 				$is_img=true;
 				//check if is smaller than thumb
 				list($img_width, $img_height, $img_type, $attr)=@getimagesize($file_path);

@@ -19,7 +19,7 @@ foreach($paths as $path)
 
     //var_dump($path);
 }
-$thumbs_path = $current_path.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'thumbs'.DIRECTORY_SEPARATOR;
+$thumbs_path = $current_path.'web'.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'thumbs'.DIRECTORY_SEPARATOR;
 $current_path .= 'web'.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'tiny'.DIRECTORY_SEPARATOR;
 if(!is_dir($thumbs_path))
 {
@@ -286,7 +286,7 @@ $config = array(
 	/******************
 	 * AVIARY config
 	 *******************/
-	'aviary_active'                           => true,
+	'aviary_active'                           => false,
 	'aviary_apiKey'                           => "2444282ef4344e3dacdedc7a78f8877d",
 	'aviary_language'                         => "en",
 	'aviary_theme'                            => "light",
@@ -310,7 +310,7 @@ $config = array(
 	/*******************
 	 * JAVA upload
 	 *******************/
-	'java_upload'                             => true,
+	'java_upload'                             => false,
 	'JAVAMaxSizeUpload'                       => 200, //Gb
 
 
