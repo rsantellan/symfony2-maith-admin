@@ -104,7 +104,7 @@ class BcuCotizadorData {
     public function retrieveTodayBcuCotization()
     {
         
-        return $this->retrieveBcuCotization(sprintf('http://bcu.gub.uy/Cotizaciones/oicot%s.txt', date('dmy')));
+        return $this->retrieveBcuCotization(sprintf('http://www.bcu.gub.uy/Cotizaciones/oicot%s.txt', date('dmy')));
     }
     
     public function retrieveLastUsableBcuCotizacion($useCache = true, $d1 = null)
@@ -112,7 +112,7 @@ class BcuCotizadorData {
         $lastdate = $this->cachedata->get('lastusedurl', 86400);
         if($lastdate && $useCache)
         {
-          return $this->retrieveBcuCotization(sprintf('http://bcu.gub.uy/Cotizaciones/oicot%s.txt', $lastdate));
+          return $this->retrieveBcuCotization(sprintf('http://www.bcu.gub.uy/Cotizaciones/oicot%s.txt', $lastdate));
         }
         if($d1 == null){
           $d1 = new \DateTime();
@@ -123,7 +123,7 @@ class BcuCotizadorData {
         {
             try
             {
-                $data = $this->retrieveBcuCotization(sprintf('http://bcu.gub.uy/Cotizaciones/oicot%s.txt', $d1->format('dmy')), $useCache);
+                $data = $this->retrieveBcuCotization(sprintf('http://www.bcu.gub.uy/Cotizaciones/oicot%s.txt', $d1->format('dmy')), $useCache);
                 $found = true;
                 $this->cachedata->set('lastusedurl', $d1->format('dmy'));
             }
