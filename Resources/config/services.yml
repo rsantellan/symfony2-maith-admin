@@ -1,5 +1,6 @@
 parameters:
      maith_common.bcucotizador.class: Maith\Common\AdminBundle\Services\BcuCotizadorService
+     maith_common.admin.parameters.class: Maith\Common\AdminBundle\Services\MaithParametersService
 #    maith_common_admin.example.class: Maith\Common\AdminBundle\Example
 
 services:
@@ -14,10 +15,10 @@ services:
 
     maith_common_admin.twig.maith_m_avatar:
         class: "Maith\Common\AdminBundle\Twig\mAvatarExtension"
-        arguments: 
+        arguments:
              - "@doctrine.orm.entity_manager"
              - "%kernel.root_dir%"
-        tags: 
+        tags:
             -  { name: twig.extension }
 
     maith_common_delete_listener:
@@ -28,8 +29,12 @@ services:
     maith_common.bcucotizador:
         class: %maith_common.bcucotizador.class%
         arguments: [@doctrine.orm.entity_manager]
-        
+
     media_gallery_manager:
         class: "Maith\Common\AdminBundle\Model\GalleryManager"
-        arguments: 
+        arguments:
              - "%kernel.root_dir%"
+
+    maith_common.parameters:
+        class: %maith_common.admin.parameters.class%
+        arguments: ["%kernel.root_dir%"]
