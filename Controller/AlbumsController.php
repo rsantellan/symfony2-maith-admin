@@ -30,7 +30,6 @@ class AlbumsController extends Controller
     public function retrieveAlbumsDataAction()
     {
         return $this->render('MaithCommonAdminBundle:Albums:showAlbums.html.twig');
-        exit(0);
     }
     
     public function albumsDataAction($id, $objectclass, $listmode = false)
@@ -38,37 +37,44 @@ class AlbumsController extends Controller
       $em = $this->getDoctrine()->getManager();
       $query = $em->createQuery("select a from MaithCommonAdminBundle:mAlbum a where a.object_id = :id and a.object_class = :object_class")->setParameters(array('id' => $id, 'object_class' => $objectclass));
       $albums = $query->getResult();
-      if(count($albums) == 0)
+      $albumsMetadata = array();
+      $obj = new $objectclass;
+      if(method_exists($obj, 'retrieveAlbums'))
       {
-        $obj = new $objectclass;
-        if(method_exists($obj, 'retrieveAlbums'))
-        {
-          $checkForOnlineVideos = false;
-          if(method_exists($obj, 'checkAlbumForOnlineVideo'))
-          {
-              $checkForOnlineVideos = true;
-          }
-          // var_dump('estoy aca');
-          foreach($obj->retrieveAlbums() as $name)
-          {
-            $album = new mAlbum();
-            $album->setObjectId($id);
-            $album->setObjectClass($objectclass);
-            $album->setName($name);
-            if($checkForOnlineVideos)
-            {
-              $album->setHasonlinevideo($obj->checkAlbumForOnlineVideo($name));
-            }
-            $em->persist($album);       
-          }
-          $em->flush();
-          $query = $em->createQuery("select a from MaithCommonAdminBundle:mAlbum a where a.object_id = :id and a.object_class = :object_class")->setParameters(array('id' => $id, 'object_class' => $objectclass));
-          $albums = $query->getResult();
-        }
+        $albumsMetadata = $obj->retrieveAlbums();
       }
-      //var_dump($albums);
-      //$imageManager = $this->get('maith_common_image.image.mimage');
-      //$imageManager->doResize();
+      if(count($albums) != count($albumsMetadata))
+      {
+        $createdAlbums = array();
+        $createAlbums = array();
+        foreach($albums as $album){
+          $createdAlbums[$album->getName()] = $album->getName();
+        }
+        foreach($albumsMetadata as $data){
+          if(!isset($createdAlbums[$data])){
+            $createAlbums[] = $data;
+          }
+        }
+        $checkForOnlineVideos = false;
+        if(method_exists($obj, 'checkAlbumForOnlineVideo'))
+        {
+            $checkForOnlineVideos = true;
+        }
+        foreach($createAlbums as $name){
+          $album = new mAlbum();
+          $album->setObjectId($id);
+          $album->setObjectClass($objectclass);
+          $album->setName($name);
+          if($checkForOnlineVideos)
+          {
+            $album->setHasonlinevideo($obj->checkAlbumForOnlineVideo($name));
+          }
+          $em->persist($album);       
+        }
+        $em->flush();
+        $query = $em->createQuery("select a from MaithCommonAdminBundle:mAlbum a where a.object_id = :id and a.object_class = :object_class")->setParameters(array('id' => $id, 'object_class' => $objectclass));
+        $albums = $query->getResult();
+      }
       if(!$listmode){
         return $this->render('MaithCommonAdminBundle:Albums:showAlbums.html.twig', array('albums' => $albums));
       }
