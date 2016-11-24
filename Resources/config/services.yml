@@ -1,6 +1,9 @@
 parameters:
      maith_common.bcucotizador.class: Maith\Common\AdminBundle\Services\BcuCotizadorService
      maith_common.admin.parameters.class: Maith\Common\AdminBundle\Services\MaithParametersService
+     maith_common.admin.twig.avatar.class: Maith\Common\AdminBundle\Twig\mAvatarExtension
+     maith_common.admin.listener.delete.class: Maith\Common\AdminBundle\Listener\DeleteListener
+     maith_common.admin.galery.manager.class: Maith\Common\AdminBundle\Model\GalleryManager
 #    maith_common_admin.example.class: Maith\Common\AdminBundle\Example
 
 services:
@@ -14,7 +17,7 @@ services:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 200 }
 
     maith_common_admin.twig.maith_m_avatar:
-        class: "Maith\Common\AdminBundle\Twig\mAvatarExtension"
+        class: %maith_common.admin.twig.avatar.class%
         arguments:
              - "@doctrine.orm.entity_manager"
              - "%kernel.root_dir%"
@@ -22,16 +25,16 @@ services:
             -  { name: twig.extension }
 
     maith_common_delete_listener:
-        class: Maith\Common\AdminBundle\Listener\DeleteListener
+        class: %maith_common.admin.listener.delete.class%
         tags:
             -  { name: doctrine.event_listener, event: preRemove }
 
     maith_common.bcucotizador:
         class: %maith_common.bcucotizador.class%
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: ["@doctrine.orm.entity_manager"]
 
     media_gallery_manager:
-        class: "Maith\Common\AdminBundle\Model\GalleryManager"
+        class: %maith_common.admin.galery.manager.class%
         arguments:
              - "%kernel.root_dir%"
 

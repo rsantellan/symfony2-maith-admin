@@ -59,13 +59,13 @@
 			  <i class="fa fa-search"></i>
 			</button>
 			<select id='globalSearchOption' class='form-control notbootstrapselect'>
-              {% if is_expr_granted("hasRole('ROLE_VIEW_CLIENT_GROUP')") %}
+              {% if is_granted("hasRole('ROLE_VIEW_CLIENT_GROUP')") %}
 			    <option value='1'>Clientes</option>
               {% endif %}  
-              {% if is_expr_granted("hasRole('ROLE_ADD_EDIT_USERS')") %}
+              {% if is_granted("hasRole('ROLE_ADD_EDIT_USERS')") %}
 			    <option value='2'>Usuarios</option>
               {% endif %}
-              {% if is_expr_granted("hasRole('ROLE_ADD_EDIT_CONTACTS')") %}
+              {% if is_granted("hasRole('ROLE_ADD_EDIT_CONTACTS')") %}
 			    <option value='3'>Contactos</option>
               {% endif %}
 			</select>
