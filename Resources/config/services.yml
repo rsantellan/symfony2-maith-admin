@@ -4,12 +4,10 @@ parameters:
      maith_common.admin.twig.avatar.class: Maith\Common\AdminBundle\Twig\mAvatarExtension
      maith_common.admin.listener.delete.class: Maith\Common\AdminBundle\Listener\DeleteListener
      maith_common.admin.galery.manager.class: Maith\Common\AdminBundle\Model\GalleryManager
+     maith_common.cache.class: Doctrine\Common\Cache\FilesystemCache
 #    maith_common_admin.example.class: Maith\Common\AdminBundle\Example
 
 services:
-#    maith_common_admin.example:
-#        class: %maith_common_admin.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
     maith_common_admin.upload:
         class: Maith\Common\AdminBundle\Listener\RequestListener
         arguments: [%maith_common_admin.upload_token%]
@@ -21,6 +19,7 @@ services:
         arguments:
              - "@doctrine.orm.entity_manager"
              - "%kernel.root_dir%"
+             - "@maith_common.cache"
         tags:
             -  { name: twig.extension }
 
@@ -41,3 +40,7 @@ services:
     maith_common.parameters:
         class: %maith_common.admin.parameters.class%
         arguments: ["%kernel.root_dir%"]
+
+    maith_common.cache:
+        class: %maith_common.cache.class%
+        arguments: ["%kernel.cache_dir%"]

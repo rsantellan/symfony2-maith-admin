@@ -143,7 +143,8 @@ class AlbumsController extends Controller
         }
         $counter++;
       }
-      
+      $cache_key = mAlbum::ALBUM_AVATAR_CACHE_KEY.$album->retrieveAvatarCacheKey();
+      $this->get('maith_common.cache')->delete($cache_key);
       $response = new JsonResponse();
       $response->setData(array('output' => true));
       return $response;
@@ -161,6 +162,8 @@ class AlbumsController extends Controller
       }
       else
       {
+        $cache_key = mAlbum::ALBUM_AVATAR_CACHE_KEY.$file->getAlbum()->retrieveAvatarCacheKey();
+        $this->get('maith_common.cache')->delete($cache_key);
         $file->removeAllFiles($this->get('kernel')->getCacheDir());
         $em->remove($file);
         $em->flush();
@@ -213,8 +216,8 @@ class AlbumsController extends Controller
             if(count($wwwData['data']) > 0 ) 
             {
               $em = $this->getDoctrine()->getManager();
-              
-              $myFile->setAlbum($em->getRepository("MaithCommonAdminBundle:mAlbum")->find($id));
+              $album = $em->getRepository("MaithCommonAdminBundle:mAlbum")->find($id);
+              $myFile->setAlbum($album);
               $myFile->setName($wwwData['data']['title']);
               $myFile->setPath('.');
               $myFile->setType($wwwData['videoType']);
@@ -224,6 +227,8 @@ class AlbumsController extends Controller
               $em->flush();
               $dataResponse['result'] = true;
               $message = 'Video guardado con exito';
+              $cache_key = mAlbum::ALBUM_AVATAR_CACHE_KEY.$album->retrieveAvatarCacheKey();
+              $this->get('maith_common.cache')->delete($cache_key);
             }
             
             //$dataResponse['message'] = $message;
@@ -327,6 +332,8 @@ class AlbumsController extends Controller
         $myFile->setSfPath($sf_targetDir);
         $em->persist($myFile);
         $em->flush();
+        $cache_key = mAlbum::ALBUM_AVATAR_CACHE_KEY.$myFile->getAlbum()->retrieveAvatarCacheKey();
+        $this->get('maith_common.cache')->delete($cache_key);
         return new Response(json_encode(array("jsonrpc" => '2.0', 'result' => null, 'id' => $albumId)));
       }
       else

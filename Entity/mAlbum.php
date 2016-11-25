@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class mAlbum {
 
+  const ALBUM_AVATAR_CACHE_KEY = 'album_avatar_';
+  
   /**
    * @var integer
    *
@@ -185,4 +187,12 @@ class mAlbum {
       $this->hasonlinevideo = $hasonlinevideo;
     }
 
+
+    public function retrieveAvatarCacheKey($hashed = true){
+      $data = $this->getName().$this->getObjectClass().$this->getObjectId();
+      if($hashed){
+        return md5($data);  
+      }
+      return $data;
+    }
 }
