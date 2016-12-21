@@ -5,7 +5,10 @@ parameters:
      maith_common.admin.listener.delete.class: Maith\Common\AdminBundle\Listener\DeleteListener
      maith_common.admin.galery.manager.class: Maith\Common\AdminBundle\Model\GalleryManager
      maith_common.cache.class: Doctrine\Common\Cache\FilesystemCache
+     maith_common.email.service.class: Maith\Common\AdminBundle\Services\MaithEmailService
 #    maith_common_admin.example.class: Maith\Common\AdminBundle\Example
+     maith_common.email.service.multiplemailers: 1
+     maith_common.email.service.maximunperhour: 999
 
 services:
     maith_common_admin.upload:
@@ -44,3 +47,8 @@ services:
     maith_common.cache:
         class: %maith_common.cache.class%
         arguments: ["%kernel.cache_dir%"]
+
+    maith_common.email:
+        class: "%maith_common.email.service.class%"
+        arguments: ["@service_container", "@doctrine.orm.entity_manager", "@logger", "%maith_common.email.service.multiplemailers%", "%maith_common.email.service.maximunperhour%"]
+        lazy: true
