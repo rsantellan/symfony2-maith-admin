@@ -53,7 +53,7 @@ class MaithEmailService {
 		return $this->mailersNames;
 	}
 
-	public function send($from, $to, $subject, $body, $indexMailer = 0, $contenType = 'text/html')
+	public function sendWithAttachment($from, $to, $subject, $body, $attachments = [], $indexMailer = 0, $contenType = 'text/html')
 	{
 		$this->logger->addDebug('Sending new email');
 		$mailer = $this->retrieveActiveMailer($indexMailer);
@@ -63,6 +63,11 @@ class MaithEmailService {
             ->setBody($body)
             ->setSubject($subject)
             ->setContentType($contenType);
+        foreach($attachments as $attachment){
+        	if(file_exists ($attachment)){
+        		$message->attach(\Swift_Attachment::fromPath($attachment));
+        	}
+        }
 		if($mailer !== null){
 			$this->logger->addDebug('Has mailer');
 			try{
@@ -78,6 +83,11 @@ class MaithEmailService {
 		$this->logger->error("No mailer is available");
 		$this->logger->error($message);
 		return 0;
+	}
+
+	public function send($from, $to, $subject, $body, $indexMailer = 0, $contenType = 'text/html')
+	{
+		return $this->sendWithAttachment($from, $to, $subject, $body, [], $indexMailer, $contenType);
 	}
 
 	public function retrieveActiveMailer($indexMailer = 0)
