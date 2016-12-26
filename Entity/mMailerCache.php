@@ -25,7 +25,7 @@ class mMailerCache
      * @var String
      *
      * @ORM\Id
-     * @ORM\Column(name="name", type="string", length=25)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 

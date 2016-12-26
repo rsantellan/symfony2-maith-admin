@@ -9,6 +9,7 @@ parameters:
 #    maith_common_admin.example.class: Maith\Common\AdminBundle\Example
      maith_common.email.service.multiplemailers: 1
      maith_common.email.service.maximunperhour: 999
+     maith_common.email.mailers_names: [swiftmailer.mailer.first_mailer,swiftmailer.mailer.second_mailer,swiftmailer.mailer.third_mailer]
 
 services:
     maith_common_admin.upload:
@@ -50,5 +51,5 @@ services:
 
     maith_common.email:
         class: "%maith_common.email.service.class%"
-        arguments: ["@service_container", "@doctrine.orm.entity_manager", "@logger", "%maith_common.email.service.multiplemailers%", "%maith_common.email.service.maximunperhour%"]
+        arguments: ["@service_container", "@doctrine.orm.entity_manager", "@logger", "%maith_common.email.service.multiplemailers%", "%maith_common.email.service.maximunperhour%", "%maith_common.email.mailers_names%"]
         lazy: true

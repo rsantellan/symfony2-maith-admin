@@ -23,20 +23,40 @@ class MaithEmailService {
 
     protected $maximunPerHour;
 
-	public function __construct(ContainerInterface $container, EntityManager $em, Logger $logger, $multipleMailers = 0, $maximunPerHour = 99)
+    protected $mailersNames;
+
+	public function __construct(ContainerInterface $container, EntityManager $em, Logger $logger, $multipleMailers = 0, $maximunPerHour = 99, $mailersNames = [])
 	{
         $this->em = $em;
         $this->logger = $logger;
         $this->container = $container;
         $this->multipleMailers = $multipleMailers;
         $this->maximunPerHour = $maximunPerHour;
+        $this->mailersNames = $mailersNames;
         $this->logger->addDebug('Starting Maith Email Service');
 	}
 
-	public function send($from, $to, $subject, $body, $contenType = 'text/html')
+	public function retriveMailersList()
+	{
+		if($this->multipleMailers == 0){
+			return ['default'];
+		}
+		if(count($this->mailersNames) == 0){
+			return array(
+            'swiftmailer.mailer.first_mailer',
+            'swiftmailer.mailer.second_mailer',
+            'swiftmailer.mailer.third_mailer',
+            'swiftmailer.mailer.fourth_mailer',
+            'swiftmailer.mailer.fifth_mailer',
+        	);
+		}
+		return $this->mailersNames;
+	}
+
+	public function send($from, $to, $subject, $body, $indexMailer = 0, $contenType = 'text/html')
 	{
 		$this->logger->addDebug('Sending new email');
-		$mailer = $this->retrieveActiveMailer();
+		$mailer = $this->retrieveActiveMailer($indexMailer);
     	$message = \Swift_Message::newInstance()
             ->setFrom($from)
             ->setTo($to)
@@ -60,33 +80,41 @@ class MaithEmailService {
 		return 0;
 	}
 
-	public function retrieveActiveMailer()
+	public function retrieveActiveMailer($indexMailer = 0)
 	{
 		if($this->multipleMailers == 0){
 			$this->logger->addDebug('Only one mailing interface');
 			return $this->retrieveBasicMailer();
 		}
-		$testingMailersList = array(
-            'swiftmailer.mailer.first_mailer',
-            'swiftmailer.mailer.second_mailer',
-            'swiftmailer.mailer.third_mailer',
-            'swiftmailer.mailer.fourth_mailer',
-            'swiftmailer.mailer.fifth_mailer',
-        );
-        $index = 0;
+		$testingMailersList = $this->retriveMailersList();
+		$index = 0;
         $found = false;
         $mailer = null;
         $name = '';
-        while($index < count($testingMailersList) && !$found){
+        if($indexMailer > 0 && isset($testingMailersList[$indexMailer])){
         	try{
-        		$mailer = $this->container->get($testingMailersList[$index]);
+        		$mailer = $this->container->get($testingMailersList[$indexMailer]);
+        		$name = $testingMailersList[$indexMailer];
                 $found = $this->checkMailer($mailer, $name);
-                $name = $testingMailersList[$index];
+                
         	} catch (\Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException $ex) {
-        		//$this->logger->addInfo($ex);
+        		$this->logger->error($ex);
         	} catch (\Exception $ex) {
-            }
-            $index++;
+            }	
+        }
+        if(!$found){
+	        while($index < count($testingMailersList) && !$found){
+	        	try{
+	        		$mailer = $this->container->get($testingMailersList[$index]);
+	        		$name = $testingMailersList[$index];
+	                $found = $this->checkMailer($mailer, $name);
+	                
+	        	} catch (\Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException $ex) {
+	        		$this->logger->error($ex);
+	        	} catch (\Exception $ex) {
+	            }
+	            $index++;
+	        }	
         }
         if(!$found){
         	return $this->retrieveBasicMailer();
