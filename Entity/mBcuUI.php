@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * mBcuUI
  *
- * @ORM\Table(name="maith_bcu_ui")
+ * @ORM\Table(name="maith_bcuui")
  * @ORM\Entity
  */
 class mBcuUI
@@ -31,7 +31,7 @@ class mBcuUI
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="valueDate", type="date")
+     * @ORM\Column(name="valueDate", type="date", unique=true)
      */
     private $valueDate;
 

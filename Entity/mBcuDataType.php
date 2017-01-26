@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * mBcuDataTypes
  *
- * @ORM\Table(name="maith_bcu_data_type")
+ * @ORM\Table(name="maith_bcudatatype")
  * @ORM\Entity
  */
 class mBcuDataType
@@ -24,23 +24,9 @@ class mBcuDataType
     /**
      * @var string
      *
-     * @ORM\Column(name="country", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
-    private $country;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="currency", type="string", length=255)
-     */
-    private $currency;
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="code", type="string", length=255)
-     */
-    private $code;
+    private $name;
 
     /**
      * @var boolean
@@ -88,28 +74,13 @@ class mBcuDataType
         return $this->visible;
     }
     
-    function getCountry() {
-      return $this->country;
+    function getName() {
+      return $this->name;
     }
 
-    function getCurrency() {
-      return $this->currency;
-    }
-
-    function getCode() {
-      return $this->code;
-    }
-
-    function setCountry($country) {
-      $this->country = $country;
-    }
-
-    function setCurrency($currency) {
-      $this->currency = $currency;
-    }
-
-    function setCode($code) {
-      $this->code = $code;
+    function setName($name) {
+      $this->name = $name;
+      return $this;
     }
 
     /**

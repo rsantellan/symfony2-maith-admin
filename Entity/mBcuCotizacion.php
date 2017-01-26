@@ -7,7 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * mBcuCotizacion
  *
- * @ORM\Table(name="maith_bcu_data")
+ * @ORM\Table(name="maith_bcudata",uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="bcu_data_indx", columns={"data_type_id", "valueDate"})})
  * @ORM\Entity
  */
 class mBcuCotizacion
@@ -45,7 +46,7 @@ class mBcuCotizacion
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="valueDate", type="datetime")
+     * @ORM\Column(name="valueDate", type="date")
      */
     private $valueDate;    
 

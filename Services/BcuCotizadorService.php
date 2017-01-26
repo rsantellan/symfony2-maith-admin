@@ -39,6 +39,7 @@ class BcuCotizadorService {
     if($updated == null){
       $this->generateData($d1);
     }
+
     $finalData = array(
           'arbitrajes' => array(),
           'cotizaciones' => array(
@@ -65,7 +66,7 @@ class BcuCotizadorService {
               ),
           );
     }
-    $idsSql = 'select id from maith_bcu_data where valueDate = (select max(valueDate) from maith_bcu_data)';
+    $idsSql = 'select id from maith_bcudata where valueDate = (select max(valueDate) from maith_bcudata)';
     $conn = $this->em->getConnection();
     $stmt = $conn->prepare($idsSql);
     $stmt->execute();
@@ -84,12 +85,11 @@ class BcuCotizadorService {
     foreach($objects as $object)
     {
       $objData = new \stdClass();
-      $objData->country = $object->getType()->getCountry();
-      $objData->currency = $object->getType()->getCurrency();
-      $objData->code = $object->getType()->getCode();
+      $objData->currency = $object->getType()->getName();
+      $objData->name = $object->getType()->getName();
       $objData->buy = $object->getBuy();
       $objData->sell = $object->getSell();
-      $finalData['cotizaciones']['monedas'][$objData->code] = $objData;
+      $finalData['cotizaciones']['monedas'][$objData->name] = $objData;
     }
     return $finalData;
   }
@@ -119,7 +119,7 @@ class BcuCotizadorService {
               ),
           );
     }
-    $sql = "select id, value, valueDate from maith_bcu_ui where valueDate <= DATE_FORMAT(NOW() ,'%Y-%m-01') order by valueDate desc limit 5";
+    $sql = "select id, value, valueDate from maith_bcuui where valueDate <= DATE_FORMAT(NOW() ,'%Y-%m-01') order by valueDate desc limit 5";
     $conn = $this->em->getConnection();
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -141,38 +141,48 @@ class BcuCotizadorService {
     $generateDateTime = clone $datetime;
     $cotizador = new BcuCotizadorData();
     $data = $cotizador->retrieveLastUsableBcuCotizacion(false, $datetime);
-    $cotizaciones = $data['cotizaciones'];
-    $uiData = $cotizaciones['ui']['values'];
-    foreach($cotizaciones["monedas"] as $cotizacion)
-    {
-      
-      $type = $this->em->getRepository('MaithCommonAdminBundle:mBcuDataType')->findOneBy(array('code' => $cotizacion->code));
+    $uiname = "UNIDAD INDEXADA";
+    foreach($data as $currency){
+      $name = $currency[0];
+      $date = $currency[1];
+      $buy = $currency[2];
+      $sell = $currency[3];
+      $arbitraje = $currency[4];
+      $type = $this->em->getRepository('MaithCommonAdminBundle:mBcuDataType')->findOneBy(array('name' => $name));
       if($type == null){
         $type = new mBcuDataType();
-        $type->setCountry($cotizacion->country);
-        $type->setCurrency($cotizacion->currency);
-        $type->setCode($cotizacion->code);
+        $type->setName($name);
         $type->setVisible(true);
         $this->em->persist($type);
         $this->em->flush();
       }
-      $dbData = new mBcuCotizacion();
-      $dbData->setBuy($cotizacion->buy);
-      $dbData->setSell($cotizacion->sell);
-      $dbData->setType($type);
-      $dbData->setValueDate($datetime);
-      $this->em->persist($dbData);
-      $this->em->flush();
-      
-    }
-    foreach($uiData as $uiDate => $uiValue)
-    {
-      $uiDatetime = \DateTime::createFromFormat('j/m/y', trim($uiDate));
-      $uiDb = new mBcuUI();
-      $uiDb->setValue($uiValue);
-      $uiDb->setValueDate($uiDatetime);
-      $this->em->persist($uiDb);
-      $this->em->flush();
+      $generatedDatetime = \DateTime::createFromFormat('j/m/Y', trim($date));
+      if($name == $uiname){
+        $uiDb = $this->em->getRepository('MaithCommonAdminBundle:mBcuUI')->findOneBy(array('valueDate' => $generatedDatetime));
+        if($uiDb == null){
+          $uiDb = new mBcuUI();
+          $uiDb->setValue($sell);
+          $uiDb->setValueDate($generatedDatetime);
+          $this->em->persist($uiDb);
+          $this->em->flush();
+        }
+      }else{
+        $dbData = $this->em->getRepository('MaithCommonAdminBundle:mBcuCotizacion')->findOneBy(array('valueDate' => $generatedDatetime, 'type' => $type));
+        if($dbData == null){
+          try{
+            $dbData = new mBcuCotizacion();
+            $dbData->setBuy($buy);
+            $dbData->setSell($sell);
+            $dbData->setType($type);
+            $dbData->setValueDate($generatedDatetime);
+            $this->em->persist($dbData);
+            $this->em->flush();
+          }catch(\Exception $e){
+            var_dump($e->getMessage());
+          }    
+        }
+        
+      }
     }
     $mBcuUpdated = new mBcuUpdated();
     $mBcuUpdated->setLastupdated($generateDateTime);
