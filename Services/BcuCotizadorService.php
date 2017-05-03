@@ -140,7 +140,56 @@ class BcuCotizadorService {
     }
     $generateDateTime = clone $datetime;
     $cotizador = new BcuCotizadorData();
-    $data = $cotizador->retrieveLastUsableBcuCotizacion(false, $datetime);
+    $data = $cotizador->retrieveLastUsableBcuCotizacion(false, $generateDateTime);
+    $cotizaciones = $data['cotizaciones'];
+    $uiData = $cotizaciones['ui']['values'];
+    foreach($cotizaciones["monedas"] as $cotizacion)
+    {
+      $type = $this->em->getRepository('MaithCommonAdminBundle:mBcuDataType')->findOneBy(array('code' => $cotizacion->code));
+
+      if($type == null){
+        $type = new mBcuDataType();
+        $type->setCountry($cotizacion->country);
+        $type->setCurrency($cotizacion->currency);
+        $type->setCode($cotizacion->code);
+        $type->setVisible(true);
+        $this->em->persist($type);
+      }
+      $dbData = $this->em->getRepository('MaithCommonAdminBundle:mBcuCotizacion')->findOneBy(array('valueDate' => $generatedDatetime, 'type' => $type));  
+      
+      if($dbData == null){
+        $dbData = new mBcuCotizacion();
+        $dbData->setBuy($cotizacion->value);
+        $dbData->setSell($cotizacion->value);
+        $dbData->setType($type);
+        $dbData->setValueDate($generatedDatetime);
+        $this->em->persist($dbData);
+      }
+      //$this->em->flush();
+    }
+    foreach($uiData as $ui)
+    {
+      $uiDb = new mBcuUI();
+      $uiDb->setValue($ui->value);
+      $uiDb->setValueDate($ui->date);
+      $this->em->persist($uiDb);
+      //$this->em->flush();
+    }
+    $mBcuUpdated = new mBcuUpdated();
+    $mBcuUpdated->setLastupdated($generateDateTime);
+    $this->em->persist($mBcuUpdated);
+    $this->em->flush();
+  }
+
+  private function generateDataHtml($datetime = null)
+  {
+    if($datetime == null)
+    {
+      $datetime = new \DateTime();
+    }
+    $generateDateTime = clone $datetime;
+    $cotizador = new BcuCotizadorData();
+    $data = $cotizador->retrieveLastUsableBcuCotizacionHtml(false, $generateDateTime);
     $uiname = "UNIDAD INDEXADA";
     foreach($data as $currency){
       $name = $currency[0];
