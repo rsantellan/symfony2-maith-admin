@@ -25,9 +25,8 @@ class Configuration implements ConfigurationInterface
         // more information on that topic.
         $rootNode
             ->children()
-                ->scalarNode('upload_token')->defaultValue('my_secret_token')
-                ->end()
-                ->end();
+                ->scalarNode('upload_token')->defaultValue('my_secret_token')->end()
+                ->scalarNode('fetch_cotizaciones')->defaultValue(false)->end();
             
         return $treeBuilder;
     }

@@ -44,7 +44,7 @@ class BcuCotizadorData {
         $finalData['cotizaciones']['monedas'] = $this->doRetrieveData($d1, true);
         $finalData['cotizaciones']['ui'] = $this->doRetrieveData($d1, false);
         $cacheData = $this->cachedata->set('bcu_cotizaciones_'.$d1->format('dmY'), $finalData);
-        
+        return $finalData;
     }
 
     private function doRetrieveData($d1 = null, $monedas = true)
@@ -53,6 +53,7 @@ class BcuCotizadorData {
         $last_date_found = false;
         $returnList = [];
         $counter = 0;
+        $url = 'http://www.bcu.gub.uy/_layouts/BCU.Cotizaciones/handler/CotizacionesHandler.ashx?op=getcotizaciones';
         while (!$last_date_found && $counter < 60) {
             $fecha = $d1->format('d/m/Y');//date("d") - $diff . "/" . date("m") . "/" . date("Y");
             if ($monedas) {
@@ -99,7 +100,7 @@ class BcuCotizadorData {
         $fecha = str_replace('/Date(', '', $fecha);
         $fecha = str_replace(')/', '', $fecha);
         $fecha = substr($fecha, 0, 10);
-        $datetime = new DateTime();
+        $datetime = new \DateTime();
         $newDate = $datetime->createFromFormat('m-d-Y', date( 'm-d-Y', $fecha));
         return $newDate;
     }

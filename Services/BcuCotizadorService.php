@@ -142,7 +142,6 @@ class BcuCotizadorService {
     $cotizador = new BcuCotizadorData();
     $data = $cotizador->retrieveLastUsableBcuCotizacion(false, $generateDateTime);
     $cotizaciones = $data['cotizaciones'];
-    $uiData = $cotizaciones['ui']['values'];
     foreach($cotizaciones["monedas"] as $cotizacion)
     {
       $type = $this->em->getRepository('MaithCommonAdminBundle:mBcuDataType')->findOneBy(array('code' => $cotizacion->code));
@@ -150,33 +149,36 @@ class BcuCotizadorService {
       if($type == null){
         $type = new mBcuDataType();
         $type->setCountry($cotizacion->country);
-        $type->setCurrency($cotizacion->currency);
+        $type->setCurrency($cotizacion->country);
         $type->setCode($cotizacion->code);
+        $type->setName($cotizacion->name);
         $type->setVisible(true);
         $this->em->persist($type);
       }
-      $dbData = $this->em->getRepository('MaithCommonAdminBundle:mBcuCotizacion')->findOneBy(array('valueDate' => $generatedDatetime, 'type' => $type));  
+      $dbData = $this->em->getRepository('MaithCommonAdminBundle:mBcuCotizacion')->findOneBy(array('valueDate' => $generateDateTime, 'type' => $type));  
       
       if($dbData == null){
         $dbData = new mBcuCotizacion();
         $dbData->setBuy($cotizacion->value);
         $dbData->setSell($cotizacion->value);
         $dbData->setType($type);
-        $dbData->setValueDate($generatedDatetime);
+        $dbData->setValueDate($generateDateTime);
         $this->em->persist($dbData);
       }
       //$this->em->flush();
     }
-    foreach($uiData as $ui)
+    foreach($cotizaciones['ui'] as $ui)
     {
-      $uiDb = new mBcuUI();
-      $uiDb->setValue($ui->value);
-      $uiDb->setValueDate($ui->date);
-      $this->em->persist($uiDb);
-      //$this->em->flush();
+      $uiDb = $this->em->getRepository('MaithCommonAdminBundle:mBcuUI')->findOneBy(array('valueDate' => $ui->date));
+      if($uiDb == null){
+        $uiDb = new mBcuUI();
+        $uiDb->setValue($ui->value);
+        $uiDb->setValueDate($ui->date);
+        $this->em->persist($uiDb);  
+      }
     }
     $mBcuUpdated = new mBcuUpdated();
-    $mBcuUpdated->setLastupdated($generateDateTime);
+    $mBcuUpdated->setLastupdated($datetime);
     $this->em->persist($mBcuUpdated);
     $this->em->flush();
   }

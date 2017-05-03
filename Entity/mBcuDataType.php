@@ -29,6 +29,26 @@ class mBcuDataType
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=255)
+     */
+    private $country;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="currency", type="string", length=255)
+     */
+    private $currency;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="code", type="string", length=255)
+     */
+    private $code;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="visible", type="boolean")
@@ -124,4 +144,33 @@ class mBcuDataType
     {
         return $this->dataValues;
     }
+
+    
+    public function getCountry() {
+        return $this->country;
+    }
+
+    public function getCurrency() {
+        return $this->currency;
+    }
+
+    public function getCode() {
+        return $this->code;
+    }
+
+    public function setCountry($country) {
+        $this->country = $country;
+        return $this;
+    }
+
+    public function setCurrency($currency) {
+        $this->currency = $currency;
+        return $this;
+    }
+
+    public function setCode($code) {
+        $this->code = $code;
+        return $this;
+    }
+
 }
