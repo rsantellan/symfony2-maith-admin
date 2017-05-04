@@ -15,7 +15,9 @@ class DefaultController extends Controller
             $bcuCotizador = $this->get('maith_common.bcucotizador');
             $data = $bcuCotizador->retrieveLastUsableCotizations();
         }
-        return $this->render('MaithCommonAdminBundle:Default:index.html.twig', array('cotizaciones' => $data));
+        return $this->render('MaithCommonAdminBundle:Default:index.html.twig', array(
+            'cotizaciones' => $data,
+        ));
     }
     
     public function retrieveDataTableTextsAction(Request $request)

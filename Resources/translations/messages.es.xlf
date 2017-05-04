@@ -72,23 +72,23 @@
       </trans-unit>
       <trans-unit id="a6681cd0cc0be66da8b99c5f45857c7d" resname="admin_menu_home">
         <source>admin_menu_home</source>
-        <target>__admin_menu_home</target>
+        <target>Inicio</target>
       </trans-unit>
       <trans-unit id="b8c5d65262a075cf3f81c96367170f7f" resname="admin_menu_tab_usuarios">
         <source>admin_menu_tab_usuarios</source>
-        <target>__admin_menu_tab_usuarios</target>
+        <target>Usuarios</target>
       </trans-unit>
       <trans-unit id="5da0cfbc35a9a95af20bc2133bb62682" resname="admin_menu_usuarios">
         <source>admin_menu_usuarios</source>
-        <target>__admin_menu_usuarios</target>
+        <target>Usuarios</target>
       </trans-unit>
       <trans-unit id="9daf39fc23717754a37aa366a73b9bdf" resname="admin_menu_grupos_roles">
         <source>admin_menu_grupos_roles</source>
-        <target>__admin_menu_grupos_roles</target>
+        <target>Permisos</target>
       </trans-unit>
       <trans-unit id="8e495476b2c1ec3576dd389843592f52" resname="admin_menu_textos">
         <source>admin_menu_textos</source>
-        <target>__admin_menu_textos</target>
+        <target>Textos</target>
       </trans-unit>
     </body>
   </file>

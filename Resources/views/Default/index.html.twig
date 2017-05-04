@@ -1,1 +1,99 @@
 {% extends 'MaithCommonAdminBundle::adminlayout.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('bundles/maithcommonadmin/admin/vendor/calculator/jquery.calculator.alt.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/admin/vendor/calculator/jquery.plugin.min.js') }}"></script> 
+<script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/admin/vendor/calculator/jquery.calculator.min.js') }}"></script> 
+<script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/admin/vendor/calculator/jquery.calculator-es.js') }}"></script> 
+<script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/admin/js/index.js') }}"></script> 
+{% endblock %}
+
+
+{% block body %}
+<!-- content wrapper -->
+<div class="content-wrap">
+  <div class="row">
+  	{% if cotizaciones['cotizaciones']['monedas'] | length > 0 %}
+    <div class="col-md-6">
+      <div class="panel panel-color">
+        <div class="panel-heading">
+          Cotizaciones
+          <small class="pull-right text-white">
+            <a class="fa fa-chevron-down panel-collapsible pd-r-xs" href="javascript:;"></a>
+            <a class="fa fa-times panel-remove" href="javascript:;"></a>
+          </small>
+        </div>
+        <div class="panel-body">
+          <table class="table table-striped no-margin">
+            <thead>
+              <tr>
+                <th>Moneda</th>
+                <th>Compra</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for dato in cotizaciones['cotizaciones']['monedas'] %}
+                <tr>
+                  <td>{{ dato.currency }}</td>
+                  <td>{{ dato.buy }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+	{% endif %}
+	{% if cotizaciones['cotizaciones']['ui']['values'] | length > 0 %}
+    <div class="col-lg-3 col-md-7 col-sm-7 col-xs-12">
+      <div class="panel panel-color">
+        <div class="panel-heading">
+          <i class="fa fa-usd"></i>&nbsp;&nbsp; Unidades Indexadas
+          <small class="pull-right text-white">
+            <a class="fa fa-chevron-down panel-collapsible pd-r-xs" href="javascript:;"></a>
+            <a class="fa fa-times panel-remove" href="javascript:;"></a>
+          </small>
+        </div>
+        <div class="panel-body table-responsive">
+          <table class="table table-striped no-margin">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key, dato in cotizaciones['cotizaciones']['ui']['values'] %}
+                <tr>
+                  <td>{{ key }}</td>
+                  <td>{{ dato }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="col-md-3">
+      <div class="panel panel-color">
+        <div class="panel-heading">
+          Calculadora
+          <small class="pull-right text-white">
+            <a class="fa fa-chevron-down panel-collapsible pd-r-xs" href="javascript:;"></a>
+            <a class="fa fa-times panel-remove" href="javascript:;"></a>
+          </small>
+        </div>
+        <div class="panel-body">
+          <div id="calculator_setup">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
