@@ -132,6 +132,68 @@ class BcuCotizadorService {
     
   }
   
+  public function retrieveUiOfDate(\DateTime $date, $quantity = 0)
+  {
+      $dql = 'select ui from MaithCommonAdminBundle:mBcuUI ui where ui.valueDate ';
+      if($quantity >= 3){
+          $dql .= '<= :date';
+      }else{
+          $dql .= '= :date';
+      }
+      $dql .= ' order by ui.valueDate desc';
+      $cotization = $this->em->createQuery($dql)
+                    ->setParameters(array('date' => $date->format('Y-m-d')))
+                    ->setMaxResults(1)
+                    ->getOneOrNullResult();
+      if($cotization){
+          return $cotization;
+      }
+      $clonedDateTime = clone $date;
+      $days = 0;
+      while($days < $quantity){
+          $clonedDateTime->modify('-1 day');
+          $days ++;
+      }
+      // Safe guard of the loop.
+      if($quantity == 4){
+          return null;
+      }
+      $this->generateData($clonedDateTime);
+      return $this->retrieveUiOfDate($date, $quantity + 1);
+  }
+
+  public function retrieveCurrencyOfDate(\DateTime $date, $currency = 'USD', $quantity = 0)
+  {
+      $dql = 'Select mc, mcd from MaithCommonAdminBundle:mBcuCotizacion mc join mc.type mcd';
+      $parameters = array('currency' =>  $currency, 'date' => $date->format('Y-m-d'));
+      $conditions = array('mcd.currency = :currency');
+      if($quantity >= 3){
+        $conditions[] = 'mc.valueDate <= :date';
+      }else{
+        $conditions[] = 'mc.valueDate = :date';
+      }
+      $dql .= " where ".implode(" and ", $conditions). ' order by mc.valueDate desc';
+      $cotization = $this->em->createQuery($dql)
+                  ->setParameters($parameters)
+                  ->setMaxResults(1)
+                  ->getOneOrNullResult();
+      if($cotization){
+        return $cotization;
+      }
+      $clonedDateTime = clone $date;
+      $days = 0;
+      while($days < $quantity){
+        $clonedDateTime->modify('-1 day');
+        $days ++;
+      }
+      // Safe guard of the loop.
+      if($quantity == 4){
+        return null;
+      }
+      $this->generateData($clonedDateTime);
+      return $this->retrieveCurrencyOfDate($date, $currency, $quantity + 1);
+  }
+
   private function generateData($datetime = null)
   {
     if($datetime == null)
