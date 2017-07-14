@@ -1,0 +1,40 @@
+  {% set gridClass = 'col-md-2' %}
+  {% set open = 'false' %}
+  {% set counter = 0 %}
+  {% for file in files%}
+    {% if counter == 0 %}
+    <div class="row show-grid">
+    {% set open = 'true' %}  
+    {% endif %}
+    {% set counter = counter + 1 %}
+      <div class="{{gridClass}}" id="file_container_{{file.fileName}}">
+        <div class="img_thumb_container">
+          <div class="img_edit">
+            <a class="edit_file_link" href="{{ path('maith_admin_wyswyg_show_file', {'folder' : name, 'file' : file.fileName}) }}" onclick="return wyswygManager.getInstance().showModal(this);">
+              Usar
+            </a>
+            {#
+              <a href="{{ path('maith_admin_wyswyg_download_file', {'folder' : name, 'file' : file.fileName}) }}">
+                <img src="{{ asset('bundles/maithcommonadmin/images/download_link.png') }}" />  
+              </a>
+            #}
+          </div>
+          <img alt="{{ file.fileName }}" src="{{ file.pathName | mImage(150, 150, 'rce') }}" />
+          <div class="img_delete">
+            <a onclick="wyswygManager.getInstance().removeImage('{{ path('maith_admin_wyswyg_remove_file', {'folder' : name, 'file' : file.fileName}) }}', '{% trans %}maith_images_admin_delete_confirmation{% endtrans %}', this);" href="javascript:void(0)" class="">
+              <i class="fa fa-trash fa-2x"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+     {% set gridClass = 'col-md-2' %}  
+
+    {%  if counter is divisibleby(6) %}
+      </div>
+     {% set open = 'false' %}
+     {% set counter = 0 %}
+    {% endif %}
+  {% endfor %}
+  {% if open == 'true' %}
+  </div>
+  {% endif %}

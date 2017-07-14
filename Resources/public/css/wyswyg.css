@@ -1,0 +1,83 @@
+.img_thumb_ul{
+  list-style-type: none;
+}
+
+.img_thumb_li{
+  float: left;
+}
+
+.img_thumb_container{
+  position: relative;
+}
+
+.img_thumb_container .img_edit{
+  position: absolute; 
+  cursor: pointer; 
+  background-color: rgb(255, 255, 255); 
+  margin: 2px 2px 2px 50px; 
+  width: 50px; 
+  text-align: center;
+  border-style: solid;
+  border-width: 1px;
+  display: none;
+}
+
+.img_thumb_container .img_delete{
+  position: absolute; 
+  cursor: pointer; 
+  background-color: rgb(255, 255, 255); 
+  text-align: center;
+  border-style: solid;
+  border-width: 1px;
+  margin: -30px 0px 0px 0px; 
+  display: none;  
+}
+
+.file_detail{
+  width: 400px;
+  position:relative;
+}
+
+.file_detail .file_image{
+  float: left;
+  width: 100%;
+}
+
+.file_detail .file_data{
+/*  float: left;*/
+  width: 100%;
+}
+
+.file_detail .file_data .title{
+  text-align:center;
+  font-size:20px;
+  font-weight: bold;
+}
+
+div.avatar{
+  border-color: blue;
+  border-style: solid;
+  border-width: 3px;
+}
+
+div.edit_media_container {
+    padding: 10px;
+    width: 580px;
+}
+div.edit_media_container img.edit_media_img {
+    float: left;
+    margin-right: 20px;
+}
+
+div.edit_media_container input.edit_media_input {
+    width: 300px;
+    border: 1px solid #B2B2B2;
+}
+
+div.edit_media_container div.saving_image_admin_file_container{
+  display: none;
+}
+
+div.show-grid {
+ margin-top: 10px;
+}

@@ -1,0 +1,29 @@
+<div class="panel">
+    <div class="panel-heading">
+        Descargar original <a href="{{ path('maith_admin_wyswyg_download_file', {'folder' : folder, 'file' : file.fileName}) }}">
+                <img src="{{ asset('bundles/maithcommonadmin/images/download_link.png') }}" />  
+              </a>
+    </div>
+      <div class="panel-body">
+          {{ form_start(form, {'attr' : {'role' : 'form', 'onsubmit': 'return wyswygManager.getInstance().generateImageUrl(this);'}}) }}
+            <div class="form-group col-xs-12 col-sm-6">
+                  {{ form_errors(form.width) }}
+                  <label for="{{ form.width.vars.id }}">Ancho</label>
+                  {{ form_widget(form.width) }}
+            </div>
+            <div class="form-group col-xs-12 col-sm-6">
+                  {{ form_errors(form.heigth) }}
+                  <label for="{{ form.heigth.vars.id }}">Alto</label>
+                  {{ form_widget(form.heigth) }}
+            </div>
+            <div class="form-group col-xs-12 col-sm-6">
+                  {{ form_errors(form.tipo) }}
+                  <label for="{{ form.tipo.vars.id }}">Tipo</label>
+                  {{ form_widget(form.tipo) }}
+            </div>
+            <div class="form-group col-lg-12">
+              <button type="submit" class="btn btn-default"><i class="fa fa-save"></i> Generar</button>
+            </div>	
+            {{ form_end(form) }}
+      </div>
+  </div>

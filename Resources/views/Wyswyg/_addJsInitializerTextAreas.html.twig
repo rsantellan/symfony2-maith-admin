@@ -1,0 +1,9 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	$('textarea').each(function(index, value){
+		CKEDITOR.replace( $(value).prop('id'), {
+		    filebrowserBrowseUrl: '{{ path('maith_admin_wyswyg_media_browser') }}',
+		} );
+	});
+});
+</script>

@@ -3,7 +3,8 @@ parameters:
      maith_common.admin.parameters.class: Maith\Common\AdminBundle\Services\MaithParametersService
      maith_common.admin.twig.avatar.class: Maith\Common\AdminBundle\Twig\mAvatarExtension
      maith_common.admin.listener.delete.class: Maith\Common\AdminBundle\Listener\DeleteListener
-     maith_common.admin.galery.manager.class: Maith\Common\AdminBundle\Model\GalleryManager
+     maith_common.admin.staticfiles.manager.class: Maith\Common\AdminBundle\Services\StaticFilesService
+     #maith_common.admin.galery.manager.class: Maith\Common\AdminBundle\Model\GalleryManager
      maith_common.cache.class: Doctrine\Common\Cache\FilesystemCache
      maith_common.email.service.class: Maith\Common\AdminBundle\Services\MaithEmailService
 #    maith_common_admin.example.class: Maith\Common\AdminBundle\Example
@@ -37,9 +38,12 @@ services:
         arguments: ["@doctrine.orm.entity_manager"]
 
     media_gallery_manager:
-        class: %maith_common.admin.galery.manager.class%
-        arguments:
-             - "%kernel.root_dir%"
+        class: %maith_common.admin.staticfiles.manager.class%
+        arguments: ["@logger", "%kernel.root_dir%", "galleries"]
+
+    media_wyswyg_manager:
+        class: %maith_common.admin.staticfiles.manager.class%
+        arguments: ["@logger", "%kernel.root_dir%", "wyswyg"]
 
     maith_common.parameters:
         class: %maith_common.admin.parameters.class%

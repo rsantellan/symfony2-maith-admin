@@ -15,7 +15,7 @@ class GalleryController extends Controller
     {
         $mediaGallery = $this->get('media_gallery_manager');
         return $this->render('MaithCommonAdminBundle:Gallery:index.html.twig', array(
-                'galleries' => $mediaGallery->getAllGalleriesWithData(),
+                'galleries' => $mediaGallery->getAllFilesWithData(),
             ));    
         
     }
@@ -65,7 +65,7 @@ class GalleryController extends Controller
       $gallery = $this->getRequest()->get('gallery');
       $mediaGallery = $this->get('media_gallery_manager');
       $logger->debug(sprintf('The gallery name is: %s', $gallery));
-      $targetDir = $mediaGallery->getGalleriesFullPath().DIRECTORY_SEPARATOR.$gallery;
+      $targetDir = $mediaGallery->getFilesFullPath().DIRECTORY_SEPARATOR.$gallery;
       
       if (!file_exists($targetDir))
       {
@@ -99,7 +99,7 @@ class GalleryController extends Controller
     public function refreshGalleryAction(Request $request){
       $gallery = $request->get('gallery');
       $mediaGallery = $this->get('media_gallery_manager');
-      $files = $mediaGallery->getGalleryFiles($gallery);
+      $files = $mediaGallery->getFiles($gallery);
       $response = new JsonResponse();
       $response->setData(array(
           'status' => 'OK',
@@ -111,7 +111,7 @@ class GalleryController extends Controller
     public function downloadFileAction($gallery, $file)
     {
       $mediaGallery = $this->get('media_gallery_manager');
-      $fileObject = $mediaGallery->getGalleryFile($gallery, $file);
+      $fileObject = $mediaGallery->getFile($gallery, $file);
       $content = $fileObject-> getContents();
       $response = new Response();
       $fileMetadata = $this->retrieveExtensionAndMiMeType($fileObject->getFilename());
@@ -121,10 +121,10 @@ class GalleryController extends Controller
       return $response;
     }
     
-    public function removeFileAction($gallery, $file)
+    public function removeFile($gallery, $file)
     {
       $mediaGallery = $this->get('media_gallery_manager');
-      $result = $mediaGallery->removeGalleryFile($gallery, $file);
+      $result = $mediaGallery->removeFile($gallery, $file);
       $response = new JsonResponse();
       $response->setData(array(
           'result' => $result          

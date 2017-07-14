@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Administrador{% endblock %}</title>
+        <!-- core styles -->
+    <link rel="stylesheet" href="{{ asset('bundles/maithcommonadmin/admin/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/maithcommonadmin/admin/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/maithcommonadmin/admin/css/animate.min.css') }}">
+    <!-- /core styles -->
+
+    <!-- template styles -->
+    <link rel="stylesheet" href="{{ asset('bundles/maithcommonadmin/admin/css/skins/palette.4.css') }}" id="skin">
+    <link rel="stylesheet" href="{{ asset('bundles/maithcommonadmin/admin/css/fonts/style.1.css') }}" id="font">
+    <link rel="stylesheet" href="{{ asset('bundles/maithcommonadmin/admin/css/main.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/colorbox.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/maithcommonadmin/css/wyswyg.css') }}" />
+
+  </head>
+  <body>
+  	<section class="main-content">
+  		<!-- content wrapper -->
+	  	<div class="content-wrap">
+	  		<div class="row">
+				<div class="col-lg-12">
+				{% for name, files in folders %}
+				    <div class="col-lg-10" id="folder_{{name}}">
+				    	<div class="col-md-5 col-sm-12">
+				      		<h3 class="text-center">{{ name }} <a class="album_uploader_link btn btn-success pull-right" href="{{ path('maith_admin_wyswyg_upload_form', {'name': name})}}"><i class="fa fa-upload"></i> Subir archivo</a></h3>
+				      	</div>
+				      	<div style="clear:both"></div>
+				      <div class='images'>
+				        {{ include('MaithCommonAdminBundle:Wyswyg:folder.html.twig', {'name': name, 'files': files }) }}
+				      </div>
+				    </div>
+				{% endfor %}
+				</div>
+				<div class="col-lg-12" style="padding-top: 25px;">
+					<a class="wyswyg_create_folder btn btn-info pull-right"  href="{{ path('maith_admin_wyswyg_media_add_folder') }}" onclick="return wyswygManager.getInstance().showModal(this);">
+						<i class="fa fa-folder"></i>  Crear nueva carpeta
+					</a>
+				</div>
+				<div>
+					<input type="text" value="{{ ckeditor }}" id="used_ckeditor_name" />
+					<input type="text" value="{{ CKEditorFuncNum }}" id="used_ckeditor_number" />
+					<input type="text" value="{{ lang }}" id="used_ckeditor_lang" />
+				</div>
+				<input type='hidden' value='{{ path('maith_admin_wyswyg_refresh') }}' id='folder_refresh_url' />
+			</div>
+			<!-- Modal -->
+			<div class="modal" id="wyswygModal">
+			  <div class="modal-dialog modal-lg">
+			    <div class="modal-content">
+			    <div class="modal-header modal-header-success">
+			      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			      <h4 class="modal-title text-uppercase" id="taskModalLabel">
+			      <i class="fa fa-user"></i>&nbsp;&nbsp;Modal</h4>
+			    </div>
+			    <div class="modal-body" id="wyswygModalBody">
+			      hello
+			    </div>
+			    <div class="modal-footer">
+			      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			    </div>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal --> 
+
+		</div>
+	</section>
+    <!-- core scripts -->
+    <script src="{{ asset('bundles/maithcommonadmin/admin/vendor/jquery-1.11.1.min.js') }}"></script>
+    <script src="{{ asset('bundles/maithcommonadmin/admin/bootstrap/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('bundles/maithcommonadmin/admin/vendor/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('bundles/maithcommonadmin/admin/vendor/jquery.placeholder.js') }}"></script>
+    <!-- /core scripts -->
+	<script src="{{ asset('bundles/maithcommonadmin/js/wyswygManager.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('bundles/maithcommonadmin/js/jquery.colorbox-min.js') }}"></script>
+  </body>
+</html>

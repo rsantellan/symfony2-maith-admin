@@ -91,3 +91,35 @@ maith_admin_media_online_video_upload:
 maith_admin_parameters_config:
     path:  /admin/parameters-configuration.html
     defaults: { _controller: MaithCommonAdminBundle:AdminParameters:showParameters }
+
+maith_admin_wyswyg_media_browser:
+    path:  /admin/wyswyg/media/browse
+    defaults: { _controller: MaithCommonAdminBundle:MediaWyswyg:wyswygShowFiles }
+
+maith_admin_wyswyg_media_add_folder:
+    path:  /admin/wyswyg/media/folder/add
+    defaults: { _controller: MaithCommonAdminBundle:MediaWyswyg:wyswygAddFolderForm }    
+
+maith_admin_wyswyg_upload_form:
+    path:     /admin/wyswyg/{name}/form
+    defaults: { _controller: MaithCommonAdminBundle:MediaWyswyg:uploadForm }
+
+maith_admin_wyswyg_refresh:
+    path:     /admin/wyswyg/refresh
+    defaults: { _controller: MaithCommonAdminBundle:MediaWyswyg:refreshFolder }
+
+maith_admin_wyswyg_do_upload:
+    path:     /admin/wyswyg/upload-to-folder
+    defaults: { _controller: MaithCommonAdminBundle:MediaWyswyg:doUpload }    
+
+maith_admin_wyswyg_download_file:
+    path:     /admin/wyswyg/{folder}/download/{file}
+    defaults: { _controller: MaithCommonAdminBundle:MediaWyswyg:downloadFile }
+
+maith_admin_wyswyg_remove_file:
+    path:     /admin/wyswyg/{folder}/remove/{file}
+    defaults: { _controller: MaithCommonAdminBundle:MediaWyswyg:removeFile }    
+
+maith_admin_wyswyg_show_file:
+    path:  /admin/wyswyg/{folder}/show/{file}
+    defaults: { _controller: MaithCommonAdminBundle:MediaWyswyg:showFile }    
