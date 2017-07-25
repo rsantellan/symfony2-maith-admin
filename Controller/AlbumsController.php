@@ -82,10 +82,10 @@ class AlbumsController extends Controller
     }
     
     
-    public function refreshAlbumAction()
+    public function refreshAlbumAction(Request $request)
     {
-      $listmode = $this->getRequest()->get("list", false);
-      $albumId = $this->getRequest()->get("id");
+      $listmode = $request->request->get("list", false);
+      $albumId = $request->request->get("id");
       $em = $this->getDoctrine()->getManager();
       $album = $em->getRepository("MaithCommonAdminBundle:mAlbum")->find($albumId);
       
@@ -109,10 +109,10 @@ class AlbumsController extends Controller
       return $this->render('MaithCommonAdminBundle:Albums:fileSortable.html.twig', array('album' => $album));
     }
     
-    public function doSortAlbumAction()
+    public function doSortAlbumAction(Request $request)
     {
-      $albumId = $this->getRequest()->get("album_id");
-      $items = $this->getRequest()->get("listItem");
+      $albumId = $request->request->get("album_id");
+      $items = $request->request->get("listItem");
       $em = $this->getDoctrine()->getManager();
       $album = $em->getRepository("MaithCommonAdminBundle:mAlbum")->find($albumId);
       $files = $album->getFiles();
@@ -285,17 +285,17 @@ class AlbumsController extends Controller
         return array('extension' => $file_extension, 'mime' => $mime_type);
     }
     
-    public function doFormUploadAction()
+    public function doFormUploadAction(Request $request)
     {
       
-      $albumId = $this->getRequest()->get('albumId');
-      $fileName = $this->getRequest()->get('name', 0);
+      $albumId = $request->request->get('albumId');
+      $fileName = $request->request->get('name', 0);
       $fileName = preg_replace('/[^\w\._]+/', '_', $fileName);
       $sf_targetDir = "upload". DIRECTORY_SEPARATOR."album-".$albumId;
       $targetDir = $this->get('kernel')->getRootDir().DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'web'. DIRECTORY_SEPARATOR.$sf_targetDir;
       if (!file_exists($targetDir))
         @mkdir($targetDir);
-      $fileUploaded = $this->container->get('request')->files->get('file');
+      $fileUploaded = $request->files->get('file');
       $mimeAndName = null;
       if(function_exists('finfo_open'))
       {
@@ -349,7 +349,7 @@ class AlbumsController extends Controller
       $em = $this->getDoctrine()->getManager();
       $file = $em->getRepository("MaithCommonAdminBundle:mFile")->find($id);
       
-      $form   = $this->createForm(new mFileType(), $file);
+      $form   = $this->createFileForm($file);
       return $this->render('MaithCommonAdminBundle:Albums:fileForm.html.twig', array('file' => $file, 'form'   => $form->createView()));
     }
     
@@ -363,18 +363,26 @@ class AlbumsController extends Controller
           throw $this->createNotFoundException('Unable to find mFile entity.');
       }
       $albumId = $entity->getAlbum()->getId();
-      $form   = $this->createForm(new mFileType(), $entity);
-      $form->bind($request);
+      $form   = $this->createFileForm($entity);
+      $form->handleRequest($request);
       $valid = false;
-      if($form->isValid())
+      if($form->isSubmitted() && $form->isValid())
       {
         $valid = true;
         $em->persist($entity);
         $em->flush();
       }
-      return new Response(json_encode(array("result" => $valid, 'albumId' => $albumId,'errors' => $form->getErrorsAsString())));
+      return new Response(json_encode(array("result" => $valid, 'albumId' => $albumId,'errors' => (string) $form->getErrors(true, false))));
     }
     
+
+    private function createFileForm(mFile $file)
+    {
+       return $this->createForm(mFileType::class, $file, array(
+        'action' => $this->generateUrl('maith_admin_media_update_file_name', array('id' => $file->getId()))
+        ));
+    }
+
     public function downloadOriginalFileAction($id)
     {
       $em = $this->getDoctrine()->getManager();

@@ -8,8 +8,7 @@
         <img src="{{ asset('bundles/maithcommonadmin/images/' ~ file.knownFileExtension ~ '.png') }}"  width='200' height='200' />
        {% endif %}
         <div style="width: 300px; float: left;">
-          <form onsubmit="parent.imagesManager.getInstance().saveFileEditForm(this); return false;" action="{{ path('maith_admin_media_update_file_name', { 'id': file.id }) }}" method="post" {{ form_enctype(form) }}>
-              <input type="hidden" name="_method" value="PUT" />
+          {{ form_start(form, {'attr' : { 'role' : 'form', 'onsubmit' : 'parent.imagesManager.getInstance().saveFileEditForm(this); return false;'} }) }}
               {{ form_errors(form) }}
               <h1>{% trans %}maith_images_admin_file_title{% endtrans %}</h1>
               <div id="form_errors_admin_file"></div>
@@ -26,9 +25,9 @@
               <div id="saving_image_admin_file" class="saving_image_admin_file_container">
                 <img src="{{ asset('bundles/maithcommonadmin/images/loading.gif') }}" />
               </div>
-              <input class="admin_file_action_button" type="submit" value="{% trans %}maith_images_admin_save_image{% endtrans %}">
-              <input class="admin_file_action_button" type="button" onclick="$.colorbox.close();" value="{% trans %}maith_images_admin_cancel_form{% endtrans %}">
-          </form>
+              <input class="admin_file_action_button btn btn-success" type="submit" value="{% trans %}maith_images_admin_save_image{% endtrans %}">
+              <input class="admin_file_action_button btn btn-info" type="button" onclick="$.colorbox.close();" value="{% trans %}maith_images_admin_cancel_form{% endtrans %}">
+          {{ form_end(form) }}
         </div>
     <div class="clear"></div>
 </div>
