@@ -45,11 +45,13 @@
 		</a>
 	</li>
     {% endif %}
+    {% if is_granted('ROLE_VIEW_ADMIN_PARAMETERS') %}
     <li>
 		<a href="{{ path('maith_admin_parameters_config')}}">
 			<i class="fa fa-file-text-o"></i>
 			<span>Parametros</span>
 		</a>
 	</li>
+	{% endif %}
   </ul>
 </nav>
