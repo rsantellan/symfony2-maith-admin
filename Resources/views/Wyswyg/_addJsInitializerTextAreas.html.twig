@@ -1,9 +1,22 @@
 <script type="text/javascript">
 $(document).ready(function() {
+	initializeWysWygEditors();
+});
+
+function initializeWysWygEditors(){
 	$('textarea').each(function(index, value){
 		CKEDITOR.replace( $(value).prop('id'), {
 		    filebrowserBrowseUrl: '{{ path('maith_admin_wyswyg_media_browser') }}',
+		    enterMode : CKEDITOR.ENTER_DIV,
+		    allowedContent: true,
 		} );
-	});
-});
+	});	
+}
+
+function destroyAllWysWygEditors(){
+	for(name in CKEDITOR.instances)
+	{
+		CKEDITOR.instances[name].destroy(true);
+	}
+}
 </script>
