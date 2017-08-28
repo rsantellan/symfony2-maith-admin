@@ -13,6 +13,13 @@ function initializeWysWygEditors(){
 	});	
 }
 
+function triggerSaveToAllWysWygEditors(){
+  $('textarea').each(function(index, value){
+      var $textarea = $(this);
+      $textarea.val(CKEDITOR.instances[$textarea.prop('id')].getData());
+  });
+}
+
 function destroyAllWysWygEditors(){
 	for(name in CKEDITOR.instances)
 	{
