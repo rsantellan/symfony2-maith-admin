@@ -64,10 +64,10 @@
     
 	$("#uploader").pluploadQueue({
 		// General settings
-		runtimes : 'html5, flash, html4',
+		runtimes : 'html5, html4',
 		url : '{{ path('maith_admin_media_actual_upload')}}',
 		max_file_size : '20mb',
-		unique_names : true,
+		//unique_names : true,
         multipart_params: {'data-session': '{{ dataSession }}', '_myUploader': true, 'albumId' : '{{ albumId }}'},
 		// Flash settings
 		flash_swf_url : '{{ asset('bundles/maithcommonadmin/js/plupload/plupload.flash.swf') }}',
