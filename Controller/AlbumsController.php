@@ -290,7 +290,7 @@ class AlbumsController extends Controller
       
       $albumId = $request->request->get('albumId');
       $fileName = $request->request->get('name', 0);
-      $fileName = preg_replace('/[^\w\._]+/', '_', $fileName);
+      //$fileName = preg_replace('/[^\w\._]+/', '_', $fileName);
       $sf_targetDir = "upload". DIRECTORY_SEPARATOR."album-".$albumId;
       $targetDir = $this->get('kernel')->getRootDir().DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'web'. DIRECTORY_SEPARATOR.$sf_targetDir;
       if (!file_exists($targetDir))
@@ -320,6 +320,7 @@ class AlbumsController extends Controller
         $myFile = new mFile();
         $myFile->setAlbum($em->getRepository("MaithCommonAdminBundle:mAlbum")->find($albumId));
         $myFile->setName($name);
+        $myFile->setShowName($fileName);
         $myFile->setPath($targetDir);
         if($mimeAndName === null)
         {
@@ -349,7 +350,7 @@ class AlbumsController extends Controller
       $em = $this->getDoctrine()->getManager();
       $file = $em->getRepository("MaithCommonAdminBundle:mFile")->find($id);
       
-      $form   = $this->createFileForm($file);
+      $form   = $this->createForm(new mFileType(), $file);
       return $this->render('MaithCommonAdminBundle:Albums:fileForm.html.twig', array('file' => $file, 'form'   => $form->createView()));
     }
     
